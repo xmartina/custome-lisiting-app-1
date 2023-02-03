@@ -1,0 +1,147 @@
+
+
+.oneColumnListImg{
+  width: 100%;
+  height: -webkit-calc(100% - 70px);
+  height: -moz-calc(100% - 70px);
+  height: calc(100% - 70px);
+  background-position: center !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  background-size: cover !important;
+  border-radius: 5px;
+}
+
+
+.btnToolSearch{
+  font-size: 20px;
+  width: 100%;
+  line-height: 2;
+  background-color: #ffffff;
+  padding: 5px;
+  text-align: center;
+  text-transform: uppercase !important;
+  color: #5294ff !important;
+  padding-top: 6px !important;
+  padding-bottom: 6px !important;
+  font-weight: 800 !important;
+  background-color: rgb(255, 255, 255) !important;
+  box-shadow: rgba(0, 0, 0, 0.14) 0px 1px 1px 1px !important;
+  cursor: pointer !important;
+  border-radius: 80px !important;
+  border-width: initial !important;
+  border-style: none !important;
+  border-color: initial !important;
+  border-image: initial !important;
+}
+
+
+
+.btnOrderSearch{
+  width: 100%;
+  line-height: 2;
+  background-color: transparent;
+  padding: 10px;
+  font-size: 14px !important;
+  letter-spacing: normal !important;
+  color: rgb(72, 72, 72) !important;
+  font-weight: 500;
+}
+
+.btnOrderSearch[dir="ltr"]{
+  text-align: right;
+}
+
+.btnOrderSearch[dir="rtl"]{
+  text-align: left;
+}
+
+
+.btnToolSearch span{
+  font-size: small;
+}
+
+.topFixed{
+  width: 100%;
+  bottom: 100px;
+  position: fixed;
+  z-index: 99;
+}
+
+.noResults{
+  font-size: small;
+  padding: 15px;
+}
+
+
+.filterDefaultBtnFiltersContainer{
+  background: transparent;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.33);
+}
+
+
+
+.tripBtnFiltersContainerAndroid{
+  bottom: 55px !important;
+}
+/*
+.tripBtnFiltersContainer{
+  background: white;
+  position: fixed;
+  bottom: 75px;
+  z-index: 99999;
+  margin: auto;
+  left: 50%;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 170px;
+  height: 35px;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  transition: box-shadow 200ms ease-in !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: -moz-fit-content;
+  width: -webkit-fit-content;
+  width: fit-content;
+  border-radius: 50px;
+  font-size: 10pt;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.29);
+  border: solid 1px #f3f3f3;
+} */
+.tripBtnFiltersContainer{
+  background: white;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  min-width: 200px;
+  height: 40px !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: -moz-fit-content;
+  width: -webkit-fit-content;
+  width: fit-content;
+  border-radius: 50px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.33);
+  border: solid 1px #f3f3f3;
+}
+
+.tripBtnFiltersContainer button{
+  background: transparent;
+  padding: 0 5px;
+  width: 50%;
+  height: 45px !important;
+  text-overflow: ellipsis;
+  font-size: 13pt;
+}
+.tripBtnFiltersContainer button:focus{
+  background-color: #d8d8d8;
+}

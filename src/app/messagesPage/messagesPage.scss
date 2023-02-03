@@ -1,0 +1,71 @@
+
+.boxShadowList{
+  -webkit-box-shadow: 0 3px 6px 0 rgba(0,0,0,.1);
+  box-shadow: 0 3px 6px 0 rgba(0,0,0,.1);
+}
+
+
+.rowListType{
+  background: white;
+  margin-bottom: 10px;
+  border-radius: 5px;
+  padding: 0 5px 0 5px;
+}
+
+.avatarImg{
+  width: 54px;
+  height: 54px;
+  min-height: 54px;
+  min-width: 54px;
+  border-radius: 50%;
+}
+
+.newImg{
+  border: 2px solid #f24286;
+  padding: 2px;
+  width: 56px !important;
+  height: 56px !important;
+  min-height: 56px !important;
+  min-width: 56px !important;
+}
+
+.newText{
+  color: #242429!important;
+  font-weight: 600!important;
+}
+
+.chatName{
+  color: #242429;
+  font-weight: 600;
+  font-size: 11pt;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  max-width: calc(100% - 20px);
+}
+
+.chatMsg{
+  font-size: 9pt;
+  line-height: 17px;
+  margin-top: 5px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  text-transform: capitalize;
+  margin-bottom: 0;
+  color: #7e7e89;
+  max-width: calc(100% - 20px);
+}
+
+.chatTime{
+  position: absolute;
+  right: 0px;
+  text-align: right;
+  top: 0;
+  height: 100%;
+  padding: 9px 0px 15px 80px;
+  font-size: 9px;
+  color: #7e7e89;
+  display: grid;
+}

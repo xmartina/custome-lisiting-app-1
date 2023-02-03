@@ -1,0 +1,125 @@
+<ion-header translucent="true" mode="{{GlobalFields.mode}}" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar>
+    <!-- If Side menu is used-->
+    <ion-buttons *ngIf="GlobalFields.site_details.navigationType==2" slot="start">
+      <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'MESSAGES' | translate}}</ion-title>
+    <div *ngIf="GlobalFields.isLoggedIn" style="text-align: right"  dir="{{GlobalFields.getLanguageLayout()}}">
+      <button *ngIf="!search" class="btn-search-header" (click)="search=true">
+        <i class="fas fa-edit"></i>
+      </button>
+      <button *ngIf="search" class="btn-search-header" style="padding: 8px 10px; color: red" (click)="search=false; resultSearchListings=undefined">
+        <i class="fas fa-times"></i>
+      </button>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<!-- Login -->
+<ion-content *ngIf="!GlobalFields.isLoggedIn" class="cards-bg social-cards" style="margin-top: 20px; padding: 15px"
+             [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+  <!-- [ngStyle]="GlobalFields.getBodyColorBackgroundJson()"  -->
+
+  <ion-header collapse="condense" dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-toolbar style="padding: 15px">
+      <ion-title size="large">{{'MESSAGES' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+  <div class="pageSection" style="margin: 15px; margin-top: 20px;">
+    <loginComponent (loginComplete)="initMsg()"></loginComponent>
+  </div>
+</ion-content>
+
+
+<!-- Msg list-->
+<ion-content *ngIf="GlobalFields.isLoggedIn" class="cards-bg social-cards" style="margin-top: 10px;"
+             [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <ion-header collapse="condense">
+    <ion-toolbar style="padding: 15px">
+      <ion-title size="large">{{'MESSAGES' | translate}}</ion-title>
+    </ion-toolbar>
+    <ion-toolbar *ngIf="search">
+      <ion-searchbar #searchInput placeholder="{{'START_A_NEW_CHAT' | translate}}" animated showCancelButton="focus"
+                     (ionInput)="searchByName($event);" (ionClear)="resultSearchListings=[]; search=false"
+                     (keyup.enter)="doTheSearch(); search=true"
+                     (keypress)="doTheSearch($event); search=true"></ion-searchbar>
+    </ion-toolbar>
+  </ion-header>
+
+  <!-- Only for android-->
+  <span class="hide-ios" *ngIf="search">
+        <ion-searchbar #searchInput animated showCancelButton="focus" (ionInput)="searchByName($event);"
+                       (ionClear)="resultSearchListings=[]; search=false" (keyup.enter)="doTheSearch(); search=true"
+                       (keypress)="doTheSearch($event); search=true"></ion-searchbar>
+  </span>
+
+<!--
+  <ion-refresher slot="fixed" (ionRefresh)="refreshChats($event)">
+    <ion-refresher-content>
+    </ion-refresher-content>
+  </ion-refresher>
+-->
+  <!-- Loading animation-->
+  <div *ngIf="loadingChats">
+    <ion-list *ngFor="let item of [1,2,3,4,5,6,7,8,9,10]">
+      <ion-item>
+        <ion-avatar slot="start">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-avatar>
+        <ion-label>
+          <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+          <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+  </div>
+
+  <div *ngIf="search">
+    <ion-row *ngFor="let user of resultSearchListings" style="line-height: 64px;"
+             (click)="getMessages(user); search=false">
+      <img class="avatarImg" src="{{user.avatar}}" style="margin: 5px; margin-right: 15px;">
+      {{user.name}}
+    </ion-row>
+  </div>
+
+  <div style="width: 100%;" *ngIf="!loadingChats && chats && !search">
+    <ion-list>
+      <ion-item *ngFor="let chat of chats.chats" (click)="getMessages(chat.op)" button>
+     <!-- <ion-item *ngFor="let key of getKeysOfObj(chats.ml)" (click)="getMessages(chats.ml[key].op)" button>-->
+        <ion-avatar slot="start">
+          <img src="{{chat.op.avatar}}">
+        </ion-avatar>
+        <ion-label>
+          <h2 [class]="'chatName ' +(chat.seen == '0' ? 'newText' : '')">{{chat.op.name}}</h2>
+          <h3 [class]="'chatMsg ' +(chat.seen == '0' ? 'newText' : '')">{{chat.message}}</h3>
+          <p>{{getGoodStringDate(chat.utime * 1000)}}</p>
+        </ion-label>
+      </ion-item>
+    </ion-list>
+
+
+    <!--
+
+                <ion-row [className]="'rowListType ' + isWhiteBackgroundBoxShadow()" >
+                    <ion-col size="2" style="padding: 0 !important; text-align: center; margin-top: 8px;" *ngIf="chats.ml[key]">
+                        <img  [class]="'avatarImg ' +(chats.ml[key].seen == '0' ? 'newImg' : '')"  src="{{chats.ml[key].op.avatar}}">
+                    </ion-col>
+                    <ion-col size="10" style="padding: 15px; max-width: calc(100% - 60px)"  *ngIf="chats.ml[key]">
+                        <div style="text-align: left;">
+                            <div [class]="'chatName ' +(chats.ml[key].seen == '0' ? 'newText' : '')">{{chats.ml[key].op.name}}</div>
+                            <div [class]="'chatMsg ' +(chats.ml[key].seen == '0' ? 'newText' : '')">{{chats.ml[key].message}}</div>
+                            <div class="chatTime">
+                                {{getGoodStringDate(chats.ml[key].utime * 1000)}}
+                            </div>
+                        </div>
+                    </ion-col>
+                </ion-row>-->
+  </div>
+
+
+</ion-content>
+

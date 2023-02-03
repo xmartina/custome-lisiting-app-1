@@ -1,0 +1,114 @@
+.section{
+  margin-bottom: 50px;
+}
+.sectionLittler{
+  margin-bottom: 10px;
+}
+
+.section{
+  margin-bottom: 50px;
+}
+.sectionLittler{
+  margin-bottom: 10px;
+}
+
+.statsSection{
+  background: #fff;
+  padding: 15px;
+  margin-bottom: 15px;
+  -webkit-transition: -webkit-box-shadow .25s ease-in-out;
+  transition: -webkit-box-shadow .25s ease-in-out;
+  transition: box-shadow .25s ease-in-out;
+  transition: box-shadow .25s ease-in-out, -webkit-box-shadow .25s ease-in-out;
+  -webkit-box-shadow: 0 2px 5px 0 rgba(0,0,0,.07);
+  box-shadow: 0 2px 5px 0 rgba(0,0,0,.07);
+  border-radius: 3px;
+}
+
+
+.statsBox{
+  width: 100%;
+  border-radius: 2px;
+  overflow: hidden;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  height: 60px;
+  padding: 15px;
+  margin-bottom: 10px;
+  align-items: center;
+  color: white;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+}
+.statsBox h2[dir="ltr"]{
+  margin-right: 15px;
+}
+.statsBox h2[dir="rtl"]{
+  margin-left: 15px;
+}
+.statsBox p{
+  margin-top: 25px;
+}
+.statsBox i {
+  color: rgba(0,0,0,.15);
+  position: absolute;
+  font-size: 28px;
+}
+.statsBox i[dir="ltr"]{
+  right: 50px;
+}
+.statsBox i[dir="rtl"]{
+  left: 50px;
+}
+
+.numberStats{
+  text-align: center;
+  font-size: 14px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  justify-content: space-around;
+  color: #757d83;
+}
+.numberStats p span{
+  font-size: 22px;
+  font-weight: 400;
+  margin-bottom: 10px;
+  color: #383838;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  /* -webkit-box-align: center; */
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
+}
+
+.animated-bars {
+  width: 2px;
+  background: rgba(0,0,0,.15);
+  height: 12px;
+  border-radius: 0;
+  position: relative;
+  -webkit-transition: .2s ease;
+  transition: .2s ease;
+  margin: auto;
+}
+
+
+.statusListing{
+  padding: 5px;
+  border-radius: 50px;
+  background-color: #eeeeee;
+  /*position: absolute;
+  bottom: 5px;
+  z-index: 99999;*/
+  font-size: 7pt;
+  left: 10px;
+  width: fit-content;
+}

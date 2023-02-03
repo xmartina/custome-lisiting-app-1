@@ -1,0 +1,82 @@
+
+<ion-header translucent="true" dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-toolbar>
+      <!-- If Side menu is used-->
+      <ion-buttons *ngIf="GlobalFields.site_details.navigationType==2" slot="start" style="position: absolute;">
+        <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+      </ion-buttons>
+      <ion-segment *ngIf="!GlobalFields.site_details.categoryListTabContent || GlobalFields.site_details.categoryListTabContent == 3" [(ngModel)]="tabShown" style="width: 50%; min-width: fit-content; margin: auto;">
+          <ion-segment-button value="1">
+              <ion-label>{{'CATEGORIES' | translate}}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="2">
+              <ion-label>{{'REGIONS' | translate}}</ion-label>
+          </ion-segment-button>
+      </ion-segment>
+      <ion-title *ngIf="GlobalFields.site_details.categoryListTabContent ==1 || GlobalFields.site_details.categoryListTabContent == 2">
+        <span *ngIf="GlobalFields.site_details.categoryListTabContent == 1">{{'CATEGORIES' | translate}}</span>
+        <span *ngIf="GlobalFields.site_details.categoryListTabContent == 2">{{'REGIONS' | translate}}</span>
+      </ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<!-- Categories -->
+<ion-content class="cards-bg social-cards" *ngIf="tabShown==1 && GlobalFields.listingCategories" style="margin-top: 20px;"
+             [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+
+    <div *ngFor="let type of categories_by_type" style="width: 100%; padding: 15px;">
+        <h3 *ngIf="type.categories && type.categories.length>0">{{type.type_name}}</h3>
+      <span *ngFor="let cat of type.categories">
+        <ion-row *ngIf="cat.count"  style="width: 100%; height: 130px;"
+                 (click)="getListingsByCategory(cat, type.type_id)">
+            <ion-col style="text-align: center">
+                <!--<div class="backImg" [style.background]="getBackground(cat)">-->
+                <div class="backImg">
+                    <img-loader [src]="getBackgroundCached(cat)" useImg
+                                [imgAttributes]="getImgCachedClass('shadedImgCached categoryImgCached')"></img-loader>
+
+                    <div class="text">
+                        <span class="categoryBox">{{cat.name}}</span>
+                        <br>
+                        <span style="position: relative; top: 24%;">{{cat.count}} {{'LISTINGS' | translate}}</span>
+                    </div>
+                </div>
+            </ion-col>
+        </ion-row>
+      </span>
+    </div>
+
+</ion-content>
+
+<!-- Regions -->
+<ion-content class="cards-bg social-cards" *ngIf="tabShown==2 && GlobalFields.regions" style="margin-top: 20px;"
+             [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+
+    <div style="width: 100%; padding: 15px;" *ngIf="regions_by_type && regions_by_type.length>0">
+      <div *ngFor="let type of regions_by_type">
+        <h3 *ngIf="type.regions && type.regions.length>0">{{type.type_name}}</h3>
+        <span *ngFor="let reg of type.regions">
+          <ion-row *ngIf="reg.count" style="width: 100%; height: 130px;"
+                   (click)="getListingsByRegion(reg, type.type_id)">
+              <ion-col style="text-align: center">
+                  <!--<div class="backImg" [style.background]="getBackground(cat)">-->
+                  <div class="backImg">
+                      <img-loader [src]="getBackgroundCachedRegions(reg)" useImg
+                                  [imgAttributes]="getImgCachedClass('shadedImgCached categoryImgCached')"></img-loader>
+                      <div class="text">
+                          <span class="categoryBox">{{reg.name}}</span>
+                          <br>
+                          <span style="position: relative; top: 24%;">{{reg.count}} {{'LISTINGS' | translate}}</span>
+                      </div>
+                  </div>
+              </ion-col>
+          </ion-row>
+        </span>
+      </div>
+
+    </div>
+
+</ion-content>

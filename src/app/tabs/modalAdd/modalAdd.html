@@ -1,0 +1,379 @@
+<ion-header *ngIf="!selectedType" class="ionHeaderHeader" dir="{{GlobalFields.getLanguageLayout()}}" style="background-color: white; border: none; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);">
+  <ion-toolbar  class="toolbarHeader">
+    <div class="headerContainer">
+      <div class="headerCol1">
+        <ion-icon name="close" style="font-size: 30px; margin: 3px;" (click)="closeModal()"></ion-icon>
+      </div>
+      <div class="headerCol2">
+        <span>{{'CREATE_LISTING' | translate}}</span>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<ion-header *ngIf="GlobalFields.listingTypesDetails && selectedType && selectedTypeDetail" style="background-color: white; border-bottom: 1px solid #ebebeb;">
+  <ion-toolbar>
+    <ion-row class="filters">
+      <div style="background-color: white; position: fixed; text-align: center; width: 30px; height: 100%;">
+        <ion-icon name="close" style="font-size: 30px; margin: 3px;" (click)="closeModal()"></ion-icon>
+      </div>
+      <ul col-12 style="padding: 0; margin: 0; margin-bottom: -5px; margin-left: 40px; display: inline-block; display:inline; display: inline-flex; height: fit-content; width: 100%; overflow: scroll;" dir="{{GlobalFields.getLanguageLayout()}}">
+        <li dir="{{GlobalFields.getLanguageLayout()}}"
+            class="typesListHorizontal selectedtypesListHorizontal"
+            [ngStyle]="this.GlobalFields.getPrimaryColorJson()">
+          <span *ngIf="selectedTypeDetail.post_title">{{selectedTypeDetail.post_title}}</span>
+        </li>
+      </ul>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <div style="height: 100%; width: 100%; margin-top: 10px; margin-bottom: 130px" *ngIf="newListing">
+
+
+
+    <!-- Type choosing-->
+    <div *ngIf="!selectedType" dir="{{GlobalFields.getLanguageLayout()}}" style="text-align: center; display: grid">
+
+      <div style="font-weight: 600; font-size: 30px;">{{'CREATE_LISTING' | translate}}</div>
+      <div style="color: #898989; font-size: 18px;">{{'CREATE_LISTING_TYPE' | translate}}</div>
+      <br>
+
+      <ion-row *ngFor="let type of GlobalFields.listingTypesDetails" style="width: 100%; height: 130px;" (click)="newListing._case27_listing_type = type.slug">
+        <ion-col style="text-align: center">
+          <!--<div class="backImg" [style.background]="getBackground(cat)">-->
+          <div class="backImg" (click)="selectedType = type.ID; selectListingType()" >
+            <img-loader [src]="getBackgroundCached(type)" useImg [imgAttributes]="getImgCachedClass('shadedImgCached categoryImgCached')"></img-loader>
+
+            <div class="text">
+              <span style="font-weight: 900; font-size: 20pt; position: relative; top: 22%;"> {{type.post_title}}</span>
+
+            </div>
+          </div>
+        </ion-col>
+      </ion-row>
+    </div>
+
+    <!-- Login -->
+    <div *ngIf="!GlobalFields.isLoggedIn && selectedType ">
+      <div class="pageSection">
+        <loginComponent (loginComplete)="checkPackages()"></loginComponent>
+      </div>
+    </div>
+
+    <!-- Loading Packages -->
+    <div *ngIf="loadingPackages && GlobalFields.isLoggedIn && selectedType">
+      <ion-list style="padding: 15px">
+        <div *ngFor="let items of [1,2,3]">
+          <ion-thumbnail style="width: 100%; height: 200px;">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+            <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+            <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+          </ion-label>
+          <br>
+        </div>
+      </ion-list>
+    </div>
+
+    <!-- Packages -->
+    <div *ngIf="!loadingPackages && GlobalFields.isLoggedIn && selectedType && !can_create_listing">
+      <div style="font-weight: 600; font-size: 30px; text-align: center">{{"CHOOSE_A_PACKAGE" | translate}}</div>
+      <br>
+      <!-- Already have packages-->
+      <span *ngIf="packagesAlreadyBought && packagesAlreadyBought.length>0">
+          <div style="color: #898989; font-size: 18px; text-align: center">{{"USE_AVAILABLE_PACKAGE" | translate}}</div>
+          <ion-card *ngFor="let package of packagesAlreadyBought" style="padding: 0px 15px;" (click)="newListing.listing_package=package.id; can_create_listing=true">
+            <h3>{{package.name}}</h3>
+            <span *ngIf="package.limit > 0">{{'REMAINING_LISTINGS' | translate}}: {{package.limit - package.count}}</span><br>
+            <span *ngIf="package.duration > 0">{{'LISTED_FOR' | translate}} {{package.duration}} days</span>
+            <button style="float: right; margin-bottom: 10px; padding: 10px; border-radius: 50px; box-shadow: 0 2px 8px rgba(0,0,0,.15)!important; background-color: white;">
+              {{'SELECT' | translate}}
+            </button>
+          </ion-card>
+          <hr>
+          <div style="color: #898989; font-size: 18px; text-align: center">Or buy a new one</div>
+          <br>
+        </span>
+      <div *ngIf="packagesToBuy && packagesToBuy.length>0">
+           <span *ngFor="let prod of packagesToBuy" >
+            <productList [product]="prod" [packages]="true"></productList>
+           </span>
+      </div>
+    </div>
+
+    <!-- Creation form -->
+    <div *ngIf="GlobalFields.isLoggedIn && selectedType && can_create_listing" class="animated fadeIn">
+          <span *ngFor="let field of fieldsTypeSelected">
+            <span *ngIf="field.show_in_submit_form && canShowPackageCondition(field)">
+                <!-- Header -->
+                <div *ngIf="field.type == 'form-heading'" class="headerSection">
+                    <div class="divisor"  *ngIf="GlobalFields.isWhiteBackground()"></div>
+                    <ion-label class="titleSectionFilter">{{field.label}}<span *ngIf="field.required">*</span></ion-label>
+                </div>
+              <!-- Input fields text-->
+                <div *ngIf="field.type == 'text'" class="filterSectionForm">
+                    <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-pen iconField"></i></label>
+                    <ion-input clearInput placeholder="{{field.placeholder}}" [(ngModel)]="newListing[field.slug]"></ion-input>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+              <!-- Input fields number-->
+                <div *ngIf="field.type == 'number'" class="filterSectionForm">
+                    <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-pen iconField"></i></label>
+                    <ion-input clearInput placeholder="{{field.placeholder}}" type="number" [(ngModel)]="newListing[field.slug]"></ion-input>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+                <div *ngIf="field.type == 'wp-editor' || field.type == 'texteditor'" class="filterSectionForm">
+                    <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-pen iconField"></i></label>
+                    <ion-textarea class="textareaEditor" rows="15" cols="20"  placeholder="{{field.placeholder}}" [(ngModel)]="newListing[field.slug]"></ion-textarea>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+                <div *ngIf="field.type == 'url'" class="filterSectionForm">
+                    <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-globe iconField"></i></label>
+                    <ion-input clearInput type="url" inputmode="url" placeholder="{{field.placeholder}}" [(ngModel)]="newListing[field.slug]"></ion-input>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+                <div *ngIf="field.type == 'email'" class="filterSectionForm">
+                    <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-envelope iconField"></i></label>
+                    <ion-input clearInput  type="email" inputmode="email" placeholder="{{field.placeholder}}" [(ngModel)]="newListing[field.slug]"></ion-input>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+                <div *ngIf="field.type == 'location'" class="filterSectionForm">
+                  <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-map-marked-alt iconField"></i></label>
+                    <i *ngIf="newListing[field.slug] != GlobalFields.address" (click)="getMyAddress(field.slug)" class="fas fa-location-arrow" style=" float: right; margin-top: 30px;"></i>
+                    <i *ngIf="newListing[field.slug] == GlobalFields.address"  (click)="getMyAddress(field.slug)" class="fas fa-location-arrow" style=" float: right; margin-top: 30px;" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i>
+                 <!-- <ion-input clearInput placeholder="{{field.placeholder}}" [(ngModel)]="newListing[field.slug]" style="width: 90%; margin: auto;"></ion-input>-->
+                   <div style="width: 90%; margin: auto;">
+                    <googleMapsAutocomplete [value]="newListing[field.slug]" [placeholder]="field.placeholder" (addressName)="newListing[field.slug]=$event"></googleMapsAutocomplete>
+                  </div>
+                  <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+
+
+              <!-- Date -->
+                <div *ngIf="field.type == 'date'" class="filterSectionForm">
+                  <label>{{field.label}}<span *ngIf="field.required">*</span></label> <i class="far fa-calendar-check iconField"></i>
+                  <!-- <span *ngIf="field.format == 'datetime'"> -->
+                        <ion-item>
+                            <ion-datetime displayFormat="DDDD MMM D, YYYY" min="1900" max="2100" [(ngModel)]="newListing[field.slug]" placeholder="{{'SELECT' | translate}}"></ion-datetime>
+                          </ion-item>
+                  <!-- </span> -->
+                     <br>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+
+              <!-- Files -->
+                <div *ngIf="field.type == 'file'" class="filterSectionForm">
+                  <label>{{field.label}}<span *ngIf="field.required">*</span></label>
+                    <br>
+                        <ion-button (click)="openImagePicker(field.multiple, field.slug)"><i class="fas fa-camera"></i></ion-button>
+                    <br>
+                    <div *ngIf="uploadingImg" class="loadingUpload"><i class="fas fa-spinner fa-spin"></i></div>
+                  <!-- Imgs -->
+                    <span *ngIf="!field.multiple && newListing[field.slug]">
+                      <img src={{newListing[field.slug]}} class="imgPreview">
+                    </span>
+                    <span *ngIf="field.multiple && newListing[field.slug]">
+                        <span *ngFor="let img of newListing[field.slug]; let i=index">
+                           <img  src={{img}} class="imgPreview">
+                           <i class="far fa-trash-alt" style="color: #e43854; padding: 10px;margin-left: 5px;" (click)="deleteNewImg(i, field.slug)"></i>
+                        </span>
+                    </span>
+                    <br>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+
+
+              <!-- Categories -->
+                <div *ngIf="field.type == 'term-select' && field.slug =='job_category'" class="filterSectionForm">
+                  <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="far fa-check-circle iconField"></i></label>
+                    <br>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                    <ion-item style="padding:0px;">
+                        <ion-select multiple="true" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"  [(ngModel)]="GlobalFields.addForm.categories" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringCategories()}}">
+                            <ion-select-option  *ngFor="let c of selectedTypeDetail.categories" value="{{c.name}}">{{c.name}}</ion-select-option>
+                        </ion-select>
+                    </ion-item>
+                </div>
+
+              <!-- Tags -->
+                <div *ngIf="field.type == 'term-select' && field.slug =='job_tags'" class="filterSectionForm">
+                  <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="far fa-check-circle iconField"></i></label>
+                    <br>
+                    <div style="max-height: 200px; overflow-y: auto; border: solid 1px #cfced2; padding: 0 10px 30px 0; border-radius: 5px; background-color: #f4f4f4;">
+                        <ion-item *ngFor="let t of GlobalFields.addForm.tags" style=" font-size: 10pt; padding: 0; margin-bottom: -11px; background-color: transparent;">
+                            <ion-label>{{t.val.name}}</ion-label>
+                            <ion-checkbox slot="end" [(ngModel)]="t.isChecked" ></ion-checkbox>
+                        </ion-item>
+                    </div>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+
+              <!-- Regions -->
+                <div *ngIf="field.type == 'term-select' && field.slug =='region'" class="filterSectionForm">
+                    <label>{{field.label}}<span *ngIf="field.required">*</span><i class="fas fa-check-circle iconField"></i></label>
+                    <div style="max-height: 200px; overflow-y: auto; border: solid 1px #cfced2; padding: 0 10px 30px 0; border-radius: 5px; background-color: #f4f4f4;">
+                        <ion-item *ngFor="let t of GlobalFields.addForm.regions" style=" font-size: 10pt; padding: 0; margin-bottom: -11px; background-color: transparent;">
+                            <ion-label>{{t.val.name}}</ion-label>
+                            <ion-checkbox slot="end" [(ngModel)]="t.isChecked" ></ion-checkbox>
+                        </ion-item>
+                    </div>
+                </div>
+
+              <!-- Select price range -->
+                <div *ngIf="field.type == 'select' && field.slug =='price_range'" class="filterSectionForm">
+                <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-dollar-sign iconField"></i></label>
+                  <br>
+                  <div style="max-height: 200px; overflow-y: auto">
+                      <ion-item style="padding:0px;">
+                          <ion-select multiple="false" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"  [(ngModel)]="GlobalFields.addForm.price_range" placeholder="{{'SELECT' | translate}}">
+                              <ion-select-option  *ngFor="let key of getKeys(field.options)" value="{{field.options[key]}}">{{field.options[key]}}</ion-select-option>
+                          </ion-select>
+                      </ion-item>
+                  </div>
+                  <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+
+
+              <!-- Working hours -->
+               <div *ngIf="field.type == 'work-hours'" class="filterSectionForm">
+                <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-clock iconField"></i></label>
+                  <br>
+
+                  <div>
+
+                    <ul class="days_header">
+                      <li [ngStyle]="selectedDay=='Monday' ? GlobalFields.getPrimaryColorJson() : undefined" (click)="selectedDay='Monday'">Mon</li>
+                      <li [ngStyle]="selectedDay=='Tuesday' ? GlobalFields.getPrimaryColorJson() : undefined" (click)="selectedDay='Tuesday'">Tue</li>
+                      <li [ngStyle]="selectedDay=='Wednesday' ? GlobalFields.getPrimaryColorJson() : undefined" (click)="selectedDay='Wednesday'">Wed</li>
+                      <li [ngStyle]="selectedDay=='Thursday' ? GlobalFields.getPrimaryColorJson() : undefined" (click)="selectedDay='Thursday'">Thu</li>
+                      <li [ngStyle]="selectedDay=='Friday' ? GlobalFields.getPrimaryColorJson() : undefined" (click)="selectedDay='Friday'">Fri</li>
+                      <li [ngStyle]="selectedDay=='Saturday' ? GlobalFields.getPrimaryColorJson() : undefined" (click)="selectedDay='Saturday'">Sat</li>
+                      <li [ngStyle]="selectedDay=='Sunday' ? GlobalFields.getPrimaryColorJson() : undefined" (click)="selectedDay='Sunday'">Sun</li>
+                    </ul>
+                    <div *ngFor="let i of ['Monday','Tuesday','Wednesday','Thursday','Friday','Saturday','Sunday']">
+                      <div *ngIf="selectedDay==i && newListing.work_hours[i]">
+                        <ion-item (click)="newListing.work_hours[i].status='enter-hours'" style="font-size: 10pt;">
+                          <ion-label>{{'ENTER_HOURS' | translate}}</ion-label> <i class="fas fa-check" *ngIf="newListing.work_hours[i].status=='enter-hours'" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i>
+                        </ion-item>
+                        <ion-item (click)="newListing.work_hours[i].status='open-all-day'" style="font-size: 10pt;">
+                          <ion-label>{{'OPEN_DAY' | translate}}</ion-label> <i class="fas fa-check" *ngIf="newListing.work_hours[i].status=='open-all-day'" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i>
+                        </ion-item>
+                        <ion-item (click)="newListing.work_hours[i].status='closed-all-day'" style="font-size: 10pt;">
+                          <ion-label>{{'CLOSED_DAY' | translate}}</ion-label> <i class="fas fa-check" *ngIf="newListing.work_hours[i].status=='closed-all-day'" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i>
+                        </ion-item>
+                        <ion-item (click)="newListing.work_hours[i].status='by-appointment-only'" style="font-size: 10pt;">
+                          <ion-label>{{"BY_APPOINTMENT_ONLY" | translate}}</ion-label> <i class="fas fa-check" *ngIf="newListing.work_hours[i].status=='by-appointment-only'" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i>
+                        </ion-item>
+                        <br>
+                        <!-- Enter Hours-->
+                        <div *ngIf="newListing.work_hours[i].status=='enter-hours'">
+                          <span *ngIf="newListing.work_hours[i].entry_hours">
+                            <div *ngFor="let hrs of newListing.work_hours[i].entry_hours; let ind = index" style="display: inline-flex;">
+                              <ion-item style="font-size: 9pt">
+                                <ion-label style="font-weight: bold;">{{"FROM" |translate}}:</ion-label>
+                                <ion-datetime [(ngModel)]="hrs.from" placeholder="{{'SELECT' | translate}}" display-timezone="utc" displayFormat="h:mm A" minuteValues="0,15,30,45"></ion-datetime>
+                              </ion-item>
+                              <ion-item style="font-size: 9pt">
+                                <ion-label style="font-weight: bold;">{{"TO" |translate}}:</ion-label>
+                                <ion-datetime [(ngModel)]="hrs.to" placeholder="{{'SELECT' | translate}}" display-timezone="utc" displayFormat="h:mm A" minuteValues="0,15,30,45"></ion-datetime>
+                              </ion-item>
+                              <button (click)="deleteEntryFromWorkHrs(ind)"><i class="fas fa-trash"></i></button>
+                             </div>
+                          </span>
+                          <button class="addWorkHoursBtn" (click)="addWorkHours()">{{'ADD' | translate}}</button>
+                        </div>
+                      </div>
+                    </div>
+                    <br><br>
+                    <label>{{'TIMEZONE' | translate}}</label>
+                    <ion-select multiple="false" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"
+                                style="border-bottom: solid 1px #d5d3d7; padding: 10px;"
+                                [compareWith]="compareWithSocialNet" [(ngModel)]="newListing.work_hours.timezone" placeholder="{{'SELECT' | translate}}">
+                      <ion-select-option  *ngFor="let key of GlobalFields.timeZones" value="{{key}}">{{key}}</ion-select-option>
+                    </ion-select>
+
+                  </div>
+
+
+                  <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+
+              <!-- Social Network Links -->
+               <div *ngIf="field.type == 'links'" class="filterSectionForm">
+                <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-link iconField"></i></label>
+                  <br>
+                  <div>
+                    <span *ngIf="newListing.links">
+                      <div *ngFor="let link of newListing.links; let ind = index" style="display: inline-flex; width: 100%; padding: 5px;">
+                        <div style="font-size: 9pt; width: 100%">
+                          <ion-select multiple="false" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"
+                                      style="border-bottom: solid 1px #d5d3d7; padding: 10px;"
+                                      [compareWith]="compareWithSocialNet" [(ngModel)]="link.network" placeholder="{{'SELECT' | translate}}">
+                            <ion-select-option  *ngFor="let key of socialNetworks" value="{{key}}">{{key}}</ion-select-option>
+                          </ion-select>
+                          <ion-input clearInput type="url" inputmode="url" placeholder="https://" [(ngModel)]="link.url"></ion-input>
+                        </div>
+                        <button (click)="deleteEntryFromLinks(ind)"><i class="fas fa-trash"></i></button>
+                       </div>
+                    </span>
+                    <button class="addWorkHoursBtn" (click)="addSocialNetLink()">{{'ADD' | translate}}</button>
+                  </div>
+
+                  <i style="font-size: x-small">{{field.description}}</i>
+                </div>
+
+
+              <!-- CUSTOM --->
+
+              <!-- Custom fields select-->
+                  <div *ngIf="(field.type == 'select' || field.type == 'multiselect') && field.is_custom"  class="filterSectionForm">
+                      <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-tasks iconField"></i></label>
+                      <br>
+                      <div style="max-height: 200px; overflow-y: auto">
+                        <ion-item style="padding:0px;">
+                            <ion-select multiple="{{field.type=='select' ? 'false' : 'true'}}" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"  [(ngModel)]="GlobalFields.getCustomFieldsByKeyAddForm(field.slug).selected" placeholder="{{'SELECT' | translate}}">
+                                <ion-select-option  *ngFor="let key of getKeys(field.options)" value="{{field.options[key]}}">{{field.options[key]}}</ion-select-option>
+                            </ion-select>
+                        </ion-item>
+                    </div>
+                    <i style="font-size: x-small">{{field.description}}</i>
+                  </div>
+
+
+              <!--Custom Taxonomies -->
+                <span *ngIf="field.type == 'term-select' && field.slug !='job_tags' && field.slug !='job_category' && field.slug !='region'">
+                    <div *ngIf="GlobalFields.getCustomTaxonomiesByKeyAddForm(field.slug)" class="filterSectionForm">
+                        <label>{{field.label}}<span *ngIf="field.required">*</span> <i class="fas fa-tasks iconField"></i></label>
+                        <ion-item style="padding:0px; width: calc(100% - 30px)">
+                          <ion-select multiple="{{field['terms-template']=='multiselect' ? 'true' : 'false'}}" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"   [(ngModel)]="GlobalFields.getCustomTaxonomiesByKeyAddForm(field.slug).selected" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringTaxonomies(field.slug)}}">
+                            <ion-select-option  *ngFor="let t of GlobalFields.getCustomTaxonomiesByKeyAddForm(field.slug).options" value="{{t.term_id}}">{{t.name}}</ion-select-option>
+                          </ion-select>
+                        </ion-item>
+                  </div>
+                </span>
+
+            </span>
+
+          </span>
+
+      <!--<button (click)="log(newListing)">log</button> -->
+
+
+      <ion-button class="confirmBtn" color="success" (click)="saveListing(); closeModal()" [disabled]="checkIfFieldsMissing()">
+        {{'SAVE' | translate}}
+      </ion-button>
+
+    </div>
+
+
+
+  </div>
+
+</ion-content>
+

@@ -1,0 +1,137 @@
+<div *ngIf="successMsg"
+     style="    text-align: center; color: #51e986; padding: 5px; border: solid 2px; border-radius: 5px; margin: 10px;">
+    <i class="far fa-check-circle" style="font-size: 20pt; color: #51e986"></i>
+    <br>
+
+    {{'PSW_RECOVERY_MSG' | translate}}
+</div>
+<!-- Login -->
+
+<!-- Login -->
+<span *ngIf="tabToShown == 0 && GlobalFields.site_details">
+  <ion-label class="nameLabel">
+    {{'LOGIN' | translate}}
+  </ion-label>
+
+  <button class="socialLoginBtn" *ngIf="GlobalFields.site_details.socialLoginGoogleEnabled" (click)="socialLogin(2)" style="color:#DB4437;">
+    <i class="fab fa-google"></i> Google login
+  </button>
+
+  <button class="socialLoginBtn" *ngIf="GlobalFields.site_details.socialLoginFacebookEnabled" (click)="socialLogin(1)" style="background-color: #4267B2; color: white">
+    <i class="fab fa-facebook"></i> Facebook login
+  </button>
+
+  <button class="socialLoginBtn" [ngStyle]="GlobalFields.getPrimaryColorJson()" (click)="tabToShown=1">
+    <i class="fas fa-envelope"></i> {{'LOGIN_WITH_YOUR_EMAIL' | translate}}
+  </button>
+
+  <br>
+  <br *ngIf="errorMgs">
+  <span *ngIf="errorMgs" style="color: #c61a42;">{{errorMgs}}</span>
+  <br *ngIf="errorMgs">
+  <br *ngIf="errorMgs">
+
+</span>
+
+
+
+
+<span *ngIf="tabToShown == 1">
+  <ion-label class="nameLabel">
+    <button class="loginBackBtn" (click)="tabToShown=0" *ngIf="GlobalFields.site_details.socialLoginGoogleEnabled || GlobalFields.site_details.socialLoginFacebookEnabled">
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="arrow-back"></ion-icon>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="arrow-forward"></ion-icon>
+    </button>
+    {{'LOGIN' | translate}}
+  </ion-label>
+  <br>
+  <div *ngIf="Constants.url.includes('mylistingdemo.danceup.dance')" style="font-size: small; margin-top: 10px">Username:<i> prova </i><br> Password:<i> password </i></div>
+  <ion-item lines="none">
+      <ion-label position="floating">{{'USERNAME' | translate}} / Email</ion-label>
+      <ion-input [(ngModel)]="GlobalFields.username" [inputmode]="'text'" type="text" clearInput></ion-input>
+  </ion-item>
+  <ion-item lines="none">
+    <ion-label position="floating">{{'PASSWORD' | translate}}</ion-label>
+    <ion-input [(ngModel)]="GlobalFields.password" [inputmode]="'password'" type="password" clearInput></ion-input>
+  </ion-item>
+  <br>
+  <br *ngIf="errorMgs">
+  <span *ngIf="errorMgs" style="color: #c61a42;">{{errorMgs}}</span>
+  <br *ngIf="errorMgs">
+  <br *ngIf="errorMgs">
+  <button class="btnLogin" [ngStyle]="GlobalFields.getPrimaryColorBackgroundJson()" (click)="login()">
+    <span style="color: white">{{'SIGN_IN' | translate}}</span>
+  </button>
+  <br><br>
+  <div>
+    <!--<a (click)="openLink(Constants.url + GlobalFields.site_details.relativeRegistrationUrl)"><i class="far fa-user" style="margin-right: 10px; color: #c7cdcf"></i> {{'NO_ACCOUNT' | translate}} </a> -->
+    <a (click)="tabToShown = 2; errorMgs = undefined"><i class="far fa-user"
+                                                         style="margin-right: 10px; color: #c7cdcf"></i> {{'NO_ACCOUNT' | translate}} </a>
+  </div>
+  <br>
+  <div>
+    <!--<a (click)="openLink(Constants.url  + GlobalFields.site_details.relativeForgotPasswordUrl)"><i class="fas fa-lock" style="margin-right: 10px; color: #c7cdcf"></i> {{'FORGOT_PASSWORD' | translate}}</a>-->
+    <a (click)="tabToShown = 3; errorMgs = undefined"><i class="fas fa-lock"
+                                                         style="margin-right: 10px; color: #c7cdcf"></i> {{'FORGOT_PASSWORD' | translate}}</a>
+  </div>
+</span>
+
+<!-- Registration-->
+<span *ngIf="tabToShown == 2">
+        <ion-label class="nameLabel"
+                   [ngStyle]="GlobalFields.getPrimaryColorJson()"> {{'SIGN_UP' | translate}}</ion-label>
+        <br><br>
+        <div>
+          <ion-label position="floating">Email</ion-label>
+          <ion-input placeholder="Email" [(ngModel)]="GlobalFields.username" [inputmode]="'text'" type="text"
+                     style="margin-left: 10px; width: calc(100% - 10px)"></ion-input>
+        </div>
+        <br>
+        <div>
+          <ion-label position="floating">{{'PASSWORD' | translate}}</ion-label>
+          <ion-input placeholder="{{'PASSWORD' | translate}}" [(ngModel)]="GlobalFields.password"
+                     [inputmode]="'password'" type="password"
+                     style="margin-left: 10px; width: calc(100% - 10px)"></ion-input>
+        </div>
+        <br>
+        <br>
+        <span *ngIf="errorMgs" style="color: #c61a42;">{{errorMgs}}</span>
+        <br *ngIf="errorMgs">
+        <br *ngIf="errorMgs">
+        <button class="btnLogin" [ngStyle]="GlobalFields.getPrimaryColorBackgroundJson()" (click)="registration()">
+          <span style="color: white">{{'SIGN_UP' | translate}}</span>
+        </button>
+        <br><br>
+        <div>
+          <a (click)="tabToShown = 1; errorMgs = undefined"><i class="far fa-user"
+                                                               style="margin-right: 10px; color: #c7cdcf"></i> {{'LOGIN' | translate}} </a>
+        </div>
+        <br>
+    </span>
+
+
+<!-- Password recovery -->
+<span *ngIf="tabToShown == 3">
+        <ion-label class="nameLabel"
+                   [ngStyle]="GlobalFields.getPrimaryColorJson()"> {{'PSW_RECOVERY' | translate}}</ion-label>
+        <br><br>
+        <div>
+          <ion-label position="floating">{{'USERNAME' | translate}}/Email</ion-label>
+          <ion-input placeholder="Email" [(ngModel)]="GlobalFields.username" [inputmode]="'text'" type="text"
+                     style="margin-left: 10px; width: calc(100% - 10px)"></ion-input>
+        </div>
+        <br>
+        <br>
+        <span *ngIf="errorMgs" style="color: #c61a42;">{{errorMgs}}</span>
+        <br *ngIf="errorMgs">
+        <br *ngIf="errorMgs">
+        <button class="btnLogin" [ngStyle]="GlobalFields.getPrimaryColorBackgroundJson()" (click)="pswRecovery()">
+          <span style="color: white">{{'SEND' | translate}}</span>
+        </button>
+        <br><br>
+        <div>
+          <a (click)="tabToShown = 1; errorMgs = undefined"><i class="far fa-user"
+                                                               style="margin-right: 10px; color: #c7cdcf"></i> {{'LOGIN' | translate}} </a>
+        </div>
+        <br>
+    </span>

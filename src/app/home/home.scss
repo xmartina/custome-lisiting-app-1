@@ -1,0 +1,421 @@
+
+.toolbar-background {
+  background-color: white;
+}
+.social-cards ion-col{
+  background-color: transparent !important;
+}
+.searchText{
+  color: #9E9E9E;
+}
+.inputSearchText{
+  color:black;
+}
+
+.section{
+  padding: 15px;
+  padding-bottom: 35px;
+  margin-bottom: 15px;
+  background-color: white;
+}
+.titleSection{
+  font-size: 15pt;
+  height: 50px;
+}
+
+
+.regionTitle{
+  height: 150px;
+  text-align: center;
+  line-height: 140px;
+  background-color: rgba(45, 45, 45, 0.54);
+  border-radius: 5px;
+  color: white;
+  font-size: 16pt;
+  font-weight: 900;
+  width: 100%;
+  background-position: center !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  background-size: cover !important;
+}
+.horizontalList{
+  overflow-x: auto;
+  display: inline-flex;
+  width: 100%;
+}
+.divHorizontalList{
+  width: 50% !important;
+  max-width: none !important;
+  margin: 5px;
+}
+.card-background-page {
+
+  ion-card {
+    position: relative;
+    text-align: center;
+    margin:-5px;
+  }
+
+  .card-title {
+    position: absolute;
+    top: 36%;
+    font-size: 10pt;
+    width: 100%;
+    font-weight: bold;
+    color: #fff;
+  }
+
+  .card-subtitle {
+    font-size: 1.0em;
+    position: absolute;
+    top: 52%;
+    width: 100%;
+    color: #fff;
+  }
+
+}
+
+.social-cards ion-col {
+  padding: 0;
+  background-color: #f3f5f8;
+}
+
+
+
+.imgList{
+  height: 100px;
+  border-radius: 5px;
+}
+
+.imgTypes{
+  object-fit: cover !important;
+  border-radius: 5px;
+}
+
+.centralArrow{
+  margin: 0;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -ms-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%)
+}
+
+
+.totalPageBackImg{
+  background: black;
+  position: relative;
+  width: 100%;
+  min-height: fit-content;
+  height: 100%;
+  background-position: center !important;
+  background-size: cover !important;
+  margin-bottom: 20px;
+  padding-bottom: 50px;
+  overflow: hidden;
+}
+
+
+.totalPageBackImg::after {
+  content:'';
+  background: black;
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  left:0;
+  opacity:0.2;
+}
+
+.backImg{
+  width: 100%;
+  height: 100px;
+  background-position: center !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  background-size: cover !important;
+  border-radius: 2px;
+  background-color: black;
+  position: relative;
+  overflow: hidden;
+}
+
+.backImgSquared{
+  width: 100px;
+  height: 100px;
+  background-position: center !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  background-size: cover !important;
+  border-radius: 5px;
+}
+.backImgLogo{
+  background-size: 100% !important;
+  height: 50px;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+}
+.backImgLogo2{
+  background-size: 100% !important;
+  background-repeat: no-repeat !important;
+  background-position: center !important;
+  position: relative;
+  top: 10%;
+  left: 25%;
+  display: flow-root;
+  height: 100px;
+  z-index: 4;
+  width: 50%;
+}
+.postImg{
+  width: 100%;
+  height: 200px;
+  background-position: center !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  background-size: cover !important;
+}
+
+.homeTypeLabel{
+  padding: 5px;
+  font-size: 12pt;
+  color: black;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0;
+}
+
+
+.basicSearchContainer{
+  padding: 20px;
+  z-index:9;
+  background-color: white;
+  position: relative;
+  top: 10%;
+  margin: 15px;
+  border-radius: 5px;
+  -webkit-box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
+}
+
+.imgLogoHorizontalltr{
+  width: 50%;
+  height: auto;
+  margin-left: 25%;
+  z-index: 9;
+  position: relative;
+  margin-top: 60px;
+  margin-bottom: -25px;
+}
+.imgLogoHorizontalrtl {
+  margin-right: 25% !important;
+  margin-left: 0 !important;
+  width: 50%;
+  z-index: 9;
+  position: relative;
+  margin-top: 60px;
+  margin-bottom: -25px;
+}
+
+.btn-search{
+  background-color: #ffffff !important;
+  transition: box-shadow 200ms ease-in !important;
+  border: 1px solid #EBEBEB !important;
+  border-radius: 63px;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.16);
+  color: #222323;
+  padding: 10px;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: calc(100% - 2px);
+  display: block;
+  margin: 5px;
+  font-size: 10pt;
+}
+
+.btn-search i{
+  font-size: 12pt;
+  margin-right: 10px;
+}
+
+.typeTitle{
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+
+}
+
+.btnLight{
+ /* border: solid 1px #4392ff;*/
+  border-radius: 10px;
+  float: right;
+  /*padding: 10px;*/
+}
+
+.loadingSlide{
+  padding: 5px;
+  height: 200px;
+  line-height: 200px;
+  border: 1px solid #f0f0f0;
+  border-radius: 10px;
+  margin: 5px;
+  color: #c2c2c2;
+}
+
+.swipeSpan{
+  text-align: center;
+  color: white;
+  height: 50px;
+  line-height: 1;
+  position: absolute;
+  width: 140px;
+  left: 50%;
+  margin-left: -70px;
+}
+
+
+/* Airbnb */
+
+.airbnbTypeName{
+  color: #222222 !important;
+  font-weight: 600;
+}
+.backImgAirbnbTypes{
+  width: 100%;
+  height: 90px;
+  background-position: center !important;
+  background-size: cover !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  border-radius: 5px 0 0;
+  background-color: black;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Tripadvisor */
+
+.backImgTrip{
+  width: 100%;
+  height: 140px;
+  background-position: center !important;
+  -webkit-background-size: cover !important;
+  -moz-background-size: cover !important;
+  -o-background-size: cover !important;
+  background-size: cover !important;
+  border-radius: 5px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 0;
+}
+
+
+.gridTripAdvisor{
+  margin-bottom: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  background-color: #f3f3f3;
+}
+
+.divGridTrip{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-grow: 0;
+  flex-shrink: 0;
+  flex-basis: 49.75%;
+  margin-bottom: .5%;
+  background: white;
+  height: 60px;
+  margin: 0px;
+  margin-bottom: 1px;
+}
+
+.divGridTrip span{
+  text-align: center;
+  text-align: center;
+  color: #4c4c4c;
+  font-size: 10px;
+  line-height: 16px;
+  font-weight: 700;
+}
+
+.divGridTrip i{
+  font-size: 20px;
+}
+
+
+.divGridTrip:nth-last-child(n+5):first-child,
+.divGridTrip:nth-last-child(n+5):first-child ~ *,
+
+.divGridTrip:nth-last-child(n+6):first-child,
+.divGridTrip:nth-last-child(n+6):first-child ~ * {
+
+  flex-basis: 33%;
+}
+
+
+.divGridTrip:nth-child(5):last-child {
+  margin-right: auto;
+  margin-left: .5%;
+}
+
+.btn-search-trip{
+  position: absolute;
+  top: 50px;
+  width: 100%;
+  text-align: center;
+}
+.btn-search-trip button{
+  background-color: #ffffff !important;
+  transition: box-shadow 200ms ease-in !important;
+  border: 1px solid #EBEBEB !important;
+  width: 60%;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  width: -moz-fit-content;
+  width: fit-content;
+  margin: 0 auto;
+  display: block;
+  text-align: left;
+  font-size: small;
+  border-radius: 50px;
+  padding: 12px 20px;
+  padding-right: 30px;
+  box-shadow: 0 8px 24px rgba(0,0,0,.16);
+  color: #4c4c4c;
+}
+
+.btn-search-trip i{
+  float: right;
+  margin-right: -20px;
+  color: #000a12;
+}
+
+.btn-near-trip{
+  border: 1px solid #EBEBEB !important;
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  margin: 0 auto;
+  display: block;
+  text-align: left;
+  font-size: small;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.16);
+  color: #010a11;
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  padding: 10px 24px;
+  border-radius: 0 !important;
+  background-color: rgba(255, 255, 255, 0.8);
+}

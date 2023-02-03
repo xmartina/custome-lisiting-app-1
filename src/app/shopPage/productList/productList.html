@@ -1,0 +1,38 @@
+
+
+
+<!-- Product -->
+<ion-card *ngIf="!packages && product.status=='publish'" style="list-style: none" (click)="GlobalFields.selectedProduct=product" [routerLink]="['/tabs/shop/product']">
+  <div style="text-align: center; background-color: whitesmoke;">
+    <img *ngIf="product.images && product.images.length>0" src="{{product.images[0].src}}" style="height: 150px; width: auto"/>
+  </div>
+  <ion-card-header>
+    <ion-card-subtitle [innerHTML]="product.price_html"></ion-card-subtitle>
+    <ion-card-title style="font-size: 12pt">
+      {{product.name}}
+      <button style="float: right; margin-bottom: 10px; padding: 10px; border-radius: 50px; box-shadow: 0 2px 8px rgba(0,0,0,.15)!important; background-color: white;">
+        <i class="fas fa-shopping-cart"></i>
+      </button>
+    </ion-card-title>
+  </ion-card-header>
+  <!--<ion-card-content></ion-card-content>-->
+</ion-card>
+
+<!-- Package -->
+<ion-card *ngIf="packages" style="list-style: none" (click)="GlobalFields.selectedProduct=product" (click)="openPackage()">
+  <div style="text-align: center; background-color: whitesmoke;">
+    <img *ngIf="product.image" src="{{product.image}}" style="height: 150px; width: auto"/>
+  </div>
+  <ion-card-header>
+    <ion-card-subtitle [innerHTML]="product.price_html"></ion-card-subtitle>
+    <ion-card-title style="font-size: 12pt">
+      {{product.name}}
+      <button style="float: right; margin-bottom: 10px; padding: 10px; border-radius: 50px; box-shadow: 0 2px 8px rgba(0,0,0,.15)!important; background-color: white;">
+        <i class="fas fa-shopping-cart"></i>
+      </button>
+    </ion-card-title>
+  </ion-card-header>
+  <ion-card-content>
+    <div [innerHTML]="product.description"></div>
+  </ion-card-content>
+</ion-card>

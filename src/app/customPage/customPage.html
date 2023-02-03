@@ -1,0 +1,26 @@
+<!-- If Side menu is used-->
+<ion-header *ngIf="GlobalFields.site_details.navigationType==2" translucent="true" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar class="sidebarHeader">
+    <ion-buttons slot="start">
+      <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{GlobalFields.site_details.nameCustomTab}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content  dir="{{GlobalFields.getLanguageLayout()}}">
+
+
+    <div *ngIf="!isAUrl" [innerHTML]="html" style="padding: 16px; margin-top: 15px"></div>
+
+    <div *ngIf="isAUrl" style="height: 100%">
+        <iframe [src]='secureUrl'
+                #iframe
+                webkitallowfullscreen mozallowfullscreen allowfullscreen
+                sandbox="allow-scripts allow-top-navigation allow-pointer-lock allow-forms allow-same-origin allow-popups"
+                style="width: 100%; height: 100%; border: none">
+        </iframe>
+    </div>
+
+</ion-content>

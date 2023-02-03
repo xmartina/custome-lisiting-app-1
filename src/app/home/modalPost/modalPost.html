@@ -1,0 +1,36 @@
+
+<ion-header (swiperight)="closeModal()">
+  <ion-toolbar style="background: linear-gradient( to bottom, #00000057, transparent );" >
+    <div [class]="GlobalFields.getLanguageLayout()=='ltr' ? 'btnFloatingLeftDiv': 'btnFloatingRightDiv'">
+      <button [class]="GlobalFields.site_details.headerBtnListingPageStyle == 2 ? 'btnFloatingWhite' : 'btnFloating'" (click)="closeModal()">
+        <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="arrow-back"></ion-icon>
+        <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="arrow-forward"></ion-icon>
+        <!--<span class="swipe">{{ 'SWIPE' | translate }}</span> -->
+      </button>
+    </div>
+    <div [class]="GlobalFields.getLanguageLayout()=='ltr' ? 'btnFloatingRightDiv': 'btnFloatingLeftDiv'">
+      <button [class]="GlobalFields.site_details.headerBtnListingPageStyle == 2 ? 'btnFloatingWhite' : 'btnFloating'" (click)="share()">
+        <i class="far fa-share-square"></i>
+      </button>
+    </div>
+
+  </ion-toolbar>
+</ion-header>
+
+
+<div style="position: fixed; height: 90%; z-index: 1; width: 10%" (swiperight)="closeModal()"></div>
+
+<ion-content style="position: absolute;" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <img *ngIf="post.img_cover"
+       class="imgTypes" style="border-radius: 0"
+       src="{{post.img_cover}}"/>
+
+  <br>
+  <div class="section titleSection" style="white-space: normal;" > {{post.title.rendered}}</div>
+
+  <div #dynamic [innerHTML]="post.content.rendered" style="padding: 16px;"></div>
+
+
+</ion-content>
+

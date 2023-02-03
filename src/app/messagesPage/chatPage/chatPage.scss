@@ -1,0 +1,115 @@
+.textAreaSend{
+  float: left;
+  width: calc(100% - 50px);
+  background: transparent !important;
+  border: solid 1px #dedede !important;
+  padding: 10px;
+  font-size: 16px;
+  color: #242429;
+  min-height: 35px;
+  line-height: 1.2;
+  height: 35px;
+  box-shadow: none !important;
+  transition: 0.2s ease;
+  border-radius: 15px;
+  font-size: 15px;
+}
+
+.textAreaSend[dir="rtl"]{
+  float: right;
+}
+
+
+.avatarImg{
+  width: 30px;
+  height: 30px;
+  min-height: 30px;
+  min-width: 30px;
+  border-radius: 50%;
+  margin-right: 5px;
+}
+
+.btnSend{
+  background: #6c1cff;
+  color: #fff;
+  border: #ffdead;
+  border-radius: 50px;
+  height: 40px;
+  width: 40px;
+  float: right;
+  outline: none !important;
+  transition: .2s ease;
+  display: flex;
+  align-items: center;
+  font-size: 14pt;
+  padding-left: 9px;
+}
+
+
+.btnSend[dir="rtl"]{
+  float: left;
+  padding-left: 0px;
+  padding-right: 12px;
+
+}
+
+.btnSend:disabled{
+  opacity: 0.4;
+}
+
+.msgMine{
+  float: right;
+  background: #6c1cff;
+  color: #fff;
+  border-radius: 10px 0 10px 10px;
+  word-break: break-word;
+  overflow: hidden;
+  margin: 0;
+  padding: 9px 15px;
+  font-size: 15px;
+  line-height: 22px!important;
+}
+
+.msgMine[dir="rtl"]{
+  float: left;
+}
+
+.msgOther{
+  float: left;
+  background: rgba(189, 189, 189, 0.21);
+  color: #242429;
+  border-radius: 0 10px 10px 10px;
+  word-break: break-word;
+  overflow: hidden;
+  margin: 0;
+  padding: 9px 15px;
+  font-size: 15px;
+  line-height: 22px!important;
+}
+
+.msgOther[dir="rtl"]{
+  float: right;
+}
+
+.msgDate{
+  font-size: 8px;
+  display: block;
+  margin-bottom: 5px;
+  color: #7e7e89;
+  text-align: right;
+}
+
+.msgDate[dir="rtl"]{
+  text-align: left;
+}
+
+.msgMineOther{
+  text-align: left !important;
+}
+
+#msgContainer{
+  width: 100%;
+  padding: 15px;
+  padding-bottom: 35px;
+  margin-top: 115px;
+}

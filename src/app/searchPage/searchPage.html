@@ -1,0 +1,135 @@
+<!-- Lista tipi listing -->
+<ion-header translucent="true">
+  <ion-toolbar *ngIf="GlobalFields.listingTypesDetails">
+    <!-- If Side menu is used-->
+    <ion-buttons *ngIf="GlobalFields.site_details.navigationType==2" slot="start">
+      <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+    </ion-buttons>
+    <ion-row class="filters">
+      <ul col-12 style="padding: 0;margin: 0; margin-bottom: -5px; display: inline-block; display:inline; display: inline-flex; height: fit-content; width: 100%; overflow: scroll;" dir="{{GlobalFields.getLanguageLayout()}}">
+        <li *ngFor="let type of GlobalFields.listingTypesDetails" dir="{{GlobalFields.getLanguageLayout()}}"
+            [class]="'typesListHorizontal' + isSelected(type.ID)"
+            [ngStyle]="isSelectedGetPrimaryColor(type.ID)"
+            (click)="GlobalFields.filtersSearch.selectedType = type.ID; selectListingType(true)">
+          <span *ngIf="type.post_title">{{type.post_title}}</span>
+        </li>
+      </ul>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content class="cards-bg social-cards"  [ngStyle]="GlobalFields.getBodyColorBackgroundJson()"  [scrollEvents]="true" (ionScroll)="onScrollHideHeader($event)"> -->
+<ion-content class="cards-bg social-cards"  [ngStyle]="GlobalFields.getBodyColorBackgroundJsonSearchPage()"  dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <!-- Filter/Map buttons Float Buttons Style-->
+  <ion-fab vertical="bottom" horizontal="end" slot="fixed" *ngIf="GlobalFields.site_details.filtersBtnStyle==1">
+    <ion-fab-button class="filterDefaultBtnFiltersContainer"   color="primary" (click)="openFilter()">
+      <i class="fas fa-filter" style="font-size: 22px; color: white;"></i>
+    </ion-fab-button>
+  </ion-fab>
+  <ion-fab vertical="bottom" horizontal="start" slot="fixed" *ngIf="GlobalFields.site_details.filtersBtnStyle==1">
+    <ion-fab-button class="filterDefaultBtnFiltersContainer"  color="primary" (click)="openMap()" [disabled]="!GlobalFields.filteredListings || !(GlobalFields.filteredListings.length > 0)">
+      <i class="fas fa-map-marked-alt" style="font-size: 22px; color: white;"></i>
+    </ion-fab-button>
+  </ion-fab>
+
+  <ion-fab vertical="bottom" slot="fixed" style="left: 50%; -webkit-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
+    <ion-fab-button color="medium" class="tripBtnFiltersContainer" [class.tripBtnFiltersContainerAndroid]="isAndroid" *ngIf="GlobalFields.site_details.filtersBtnStyle==2">
+      <button (click)="openMap()" style="border-radius: 50px 0 0 50px; border-right: 1px solid #eeeeee !important;" [disabled]="!GlobalFields.filteredListings || !(GlobalFields.filteredListings.length > 0)"><i class="fas fa-map-marked-alt" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i> {{'MAP' | translate}}</button>
+      <button (click)="openFilter()" style="border-radius: 0 50px 50px 0;"><i class="fas fa-filter" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i> {{'FILTERS' | translate}}</button>
+    </ion-fab-button>
+  </ion-fab>
+
+  <!-- Filter/Map buttons TripAdvisor Style
+  <div class="tripBtnFiltersContainer" [class.tripBtnFiltersContainerAndroid]="isAndroid" *ngIf="GlobalFields.site_details.filtersBtnStyle==2">
+    <button (click)="openMap()" style="border-radius: 50px 0 0 50px; border-right: 1px solid #eeeeee !important;"><i class="fas fa-map-marked-alt" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i> {{'MAP' | translate}}</button>
+    <button (click)="openFilter()" style="border-radius: 0 50px 50px 0;"><i class="fas fa-filter" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i> {{'FILTERS' | translate}}</button>
+  </div>
+  -->
+
+  <ion-row>
+
+    <ion-row style="width: 100%;">
+      <ion-col col-6 style="float: left">
+        <ion-item *ngIf="GlobalFields.selectedTypeDetail">
+         <ion-select interface="popover" [(ngModel)]="GlobalFields.filtersSearch.order" style="max-width: 100%;"
+                     [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"
+                     (ionChange)="selectListingType(false)">
+           <ion-label>asd <ion-icon name="list" style="font-size: 24px !important; color: #484848 !important; font-weight: bolder; position: relative; top: 3px;"></ion-icon></ion-label>
+          <ion-select-option *ngFor="let order of GlobalFields.selectedTypeDetail.case27_listing_type_search_page.order.options"
+                  value="{{order.key}}">{{order.label}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      </ion-col>
+      <ion-col col-6 style="float: right">
+        <button class="btnOrderSearch" dir="{{GlobalFields.getLanguageLayout()}}">
+          <span *ngIf="!GlobalFields.filtersSearch.countListings && GlobalFields.filtersSearch.countListings != 0"></span>
+          <span *ngIf="GlobalFields.filtersSearch.countListings == 0">{{'NO_RESULTS' | translate}}</span>
+          <span *ngIf="GlobalFields.filtersSearch.countListings && GlobalFields.filtersSearch.countListings > 0"> {{GlobalFields.filtersSearch.countListings}} {{'RESULTS' | translate}}</span>
+        </button>
+      </ion-col>
+    </ion-row>
+
+
+    <!-- List of results-->
+    <ion-row *ngIf="GlobalFields.filteredListings && GlobalFields.filteredListings.length>0" style="width: 100%; margin-bottom: 100px;">
+
+      <ion-col col-12 style="padding: 10px;">
+        <div *ngFor="let listing of GlobalFields.filteredListings;  let i = index" style="margin-bottom: 15px;">
+          <page-listingList [listing]="listing" [type]="getListType(GlobalFields.selectedTypeDetail.case27_listing_type_result_template.template)" [search]="true"></page-listingList>
+        </div>
+
+        <!-- <div style="width: 100%; text-align: center;" *ngIf="!GlobalFields.filtersSearch.noMorePage && !loadingMoreData" (click)="loadData()">
+          <ion-icon name="refresh"></ion-icon> {{'LOAD_MORE' | translate}}
+        </div>
+        <div style="width: 100%; text-align: center;" *ngIf="loadingMoreData">
+          <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+        </div>-->
+
+        <div style="text-align: center; width: 100%; height: 300px; color: #afafaf; padding-top: 100px;" *ngIf="loadingMoreData">
+          <div style="margin-bottom: -10px">
+            Loading more
+          </div>
+          <div class="lds-ellipsis" ><div></div><div></div><div></div><div></div></div>
+        </div>
+
+         <ion-infinite-scroll *ngIf="!this.loadingMoreData && !GlobalFields.filtersSearch.noMorePage" threshold="100px" (ionInfinite)="loadData($event)">
+              <ion-infinite-scroll-content
+                loadingSpinner="dots"
+                loadingText="{{'LOAD_MORE' | translate}}">
+              </ion-infinite-scroll-content>
+            </ion-infinite-scroll>
+
+
+      </ion-col>
+    </ion-row>
+
+    <ion-row *ngIf="GlobalFields.filteredListings && GlobalFields.filteredListings.length==0" style="width: 100%;">
+      <ion-col>
+        <div *ngIf="GlobalFields.filtersSearch.location" class="noResults">
+          {{'NO_NEAR_RESULTS' | translate}} <i>{{GlobalFields.filtersSearch.location}}</i> <br><br> {{'EDIT_FILTER_RETRY' | translate}}.
+        </div>
+        <div *ngIf="!GlobalFields.filtersSearch.location" class="noResults">
+         {{'NO_RESULTS' | translate}}. <br><br> {{'EDIT_FILTER_RETRY' | translate}}.
+        </div>
+
+        <ion-button expand="full" color="primary"  (click)="openFilter()"><ion-icon name="switch"></ion-icon> {{'FILTERS' | translate}}</ion-button>
+
+        <div (click)="clearFilters()" style="padding: 15px; text-align: center; color: #F44336;">
+          <i class="fas fa-trash"></i> Clear filters
+        </div>
+
+
+      </ion-col>
+    </ion-row>
+
+
+    <div style="width: 100%; text-align: center; background-color: transparent; position: fixed; top: 50%;" *ngIf="GlobalFields.filteredListings == undefined">
+      <div class="lds-ellipsis" ><div></div><div></div><div></div><div></div></div>
+    </div>
+
+
+  </ion-row>
+
+  <div id="check-point"></div>  <!-- Check point to the bottom -->
+</ion-content>

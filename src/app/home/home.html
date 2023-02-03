@@ -1,0 +1,397 @@
+
+<!-- If Side menu is used-->
+<ion-header *ngIf="GlobalFields.site_details.navigationType==2" translucent="true" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar [class.sidebarHeader]="GlobalFields.site_details.homeType != 1 ">
+    <ion-buttons slot="start" style="position: absolute;">
+      <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+    </ion-buttons>
+    <div *ngIf="GlobalFields.site_details.logoUrl" style="text-align: center; width: 100%"><img [src]="GlobalFields.site_details.logoUrl" style="height: 38px; width: auto; max-width: none !important;"></div>
+    <ion-title *ngIf="!GlobalFields.site_details.logoUrl">{{appName}}</ion-title>
+    <ion-buttons slot="end" style="position: absolute; right: 5px">
+      <button class="btn-search-header" (click)="openModalSearch()" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-search"></i></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<!-- Header Airbnb type home if TABS-->
+<ion-header *ngIf="GlobalFields.site_details.homeType == 1 && GlobalFields.site_details.navigationType==1" [class]="headerClass"   dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar>
+    <!-- If Side menu is used-->
+    <ion-buttons *ngIf="GlobalFields.site_details.navigationType==2"  slot="start">
+      <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+    </ion-buttons>
+    <div style="margin: 5px; margin-top: 15px; height: 65px; z-index: 100 !important;">
+      <ion-row class="filters" dir="{{GlobalFields.getLanguageLayout()}}">
+          <ion-col no-padding  size="2" style="text-align: center"><img style="height: 50px;" src="{{GlobalFields.site_details.logoUrl}}"></ion-col>
+          <ion-col no-padding  size="10">
+            <button class="btn-search" (click)="openModalSearch()" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-search"></i> {{ 'SEARCH' | translate }} </button>
+            <!--<<button *ngIf="GlobalFields.address" class="btn-search" (click)="searchNearMe()" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-search"></i> {{ 'TRY_WITH' | translate }} "{{GlobalFields.address}}"</button>
+            <button *ngIf="!GlobalFields.address" class="btn-search" (click)="navController.navigateForward('tabs/search')" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-search"></i> {{ 'SEARCH' | translate }} </button>-->
+          </ion-col>
+      </ion-row>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+<!-- <ion-content class="cards-bg social-cards" [scrollEvents]="true" (ionScroll)="onScrollHideHeader($event)"> -->
+<ion-content class="cards-bg social-cards" dir="{{GlobalFields.getLanguageLayout()}}"  [ngStyle]="getBackgroundBasedOnHomeType()" >
+
+
+  <!-- Airbnb type home-->
+    <span class="section" *ngIf="GlobalFields.listingTypesDetails && GlobalFields.site_details.homeType == 1">
+        <ion-label class="titleSection">  {{ 'WHAT_SEARCH' | translate }}</ion-label>
+        <ion-toolbar>
+            <ion-row class="filters">
+              <ion-col no-padding col-12>
+                <ion-slides [options]="slideOpts3" >
+                  <ion-slide *ngFor="let type of GlobalFields.listingTypesDetails" style="margin: 0px;" (click)="searchByType(type.ID)">
+                    <ion-card style="padding: 0;width: 100%; margin-right: 0px !important; margin-bottom: 15px !important;; height: 125px; ">
+                      <div *ngIf="type.img_cover" class="backImgAirbnbTypes">
+                        <img-loader [src]="type.img_cover" useImg [imgAttributes]="getImgCachedClass('imgAirbnbHomeType')"></img-loader>
+                      </div>
+                      <div *ngIf="!type.img_cover" class="backImgAirbnbTypes" [style.background]="'url(' + GlobalFields.site_details.placeholderImgUrl + ')'"></div>
+                        <ion-card-header style=" padding: 0; height: 100%; line-height: 35px; text-align: left; padding-left: 15px;">
+                            <span class="airbnbTypeName">{{type.post_title}}</span>
+                        </ion-card-header>
+                    </ion-card>
+                  </ion-slide>
+                  <ion-slide></ion-slide>
+                </ion-slides>
+              </ion-col>
+            </ion-row>
+        </ion-toolbar>
+    </span>
+
+
+    <!-- Tripadvisor type home-->
+    <div *ngIf="GlobalFields.listingTypesDetails && GlobalFields.site_details.homeType == 3">
+        <div class="backImgTrip">
+            <img-loader *ngIf="GlobalFields.site_details.iconUrl" [src]="GlobalFields.site_details.iconUrl" useImg [imgAttributes]="getImgCachedClass('imgAirbnbHomeType')"></img-loader>
+            <div *ngIf="!GlobalFields.site_details.iconUrl" class="backImg" [style.background]="'url(' + GlobalFields.site_details.placeholderImgUrl + ')'"></div>
+            <div class="btn-search-trip">
+                <button (click)="openModalSearch()" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-search"></i> {{ 'WHAT_SEARCH' | translate }} </button>
+            </div>
+        </div>
+        <section class="gridTripAdvisor" *ngIf="GlobalFields.listingTypesDetails.length>1">
+            <div class="divGridTrip" *ngFor="let type of GlobalFields.listingTypesDetails" (click)="searchByType(type.ID)">
+                <span>
+                    <i *ngIf="type.icon" class="{{type.icon}}"></i>
+                    <br>
+                    {{type.post_title}}
+                </span>
+            </div>
+        </section>
+
+        <div class="section">
+            <ion-label class="titleSection"> {{ 'EXPLORE' | translate }} {{ 'NEAR_YOU' | translate }}</ion-label>
+            <div class="backImgTrip" style="height: 100px;">
+                <div class="backImg" [style.background]="'url(../../assets/imgs/GoogleMapTA.jpg)'"></div>
+                <button class="btn-near-trip" (click)="searchNearMe()" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-map-pin"></i> {{'SEARCH' | translate}} </button>
+            </div>
+        </div>
+    </div>
+
+  <!-- MyListing type home with custom search -->
+  <div *ngIf="GlobalFields.site_details.homeType == 2 && GlobalFields.selectedTypeDetail" class="totalPageBackImg ">
+
+      <img-loader [src]="GlobalFields.selectedTypeDetail.img_cover" useImg [imgAttributes]="getImgCachedClass('imgCachedAsBackground shadedImgCached mylistingHomeImgCached')"></img-loader>
+
+      <!--  <div class="backImgLogo2" [style.background]="'url(' + GlobalFields.site_details.logoUrl + ')'"></div> -->
+        <img *ngIf="GlobalFields.site_details.iconUrl" src="{{GlobalFields.site_details.iconUrl}}" [class]="'imgLogoHorizontal' + GlobalFields.getLanguageLayout()" >
+
+
+        <ul col-12 style="display: flex; padding: 0; margin: 10px; width: 100%; z-index:9; position: relative; top: 10%; margin-top: 15px; overflow: scroll;"   dir="{{GlobalFields.getLanguageLayout()}}">
+            <li *ngFor="let type of GlobalFields.listingTypesDetails" [class]="'typesListHorizontalWhite' + isSelected(type.ID)" (click)="GlobalFields.filtersSearch.selectedType = type.ID; selectListingType()"   dir="{{GlobalFields.getLanguageLayout()}}">
+                <span *ngIf="type.post_title">{{type.post_title}}</span>
+            </li>
+        </ul>
+
+
+        <div *ngIf="GlobalFields.selectedTypeDetail" class="basicSearchContainer">
+            <div *ngFor="let filter of GlobalFields.selectedTypeDetail.case27_listing_type_search_page.basic.facets"  class="filterSectionBasic">
+
+                <div *ngIf="filter.type == 'location'" >
+                        <ion-label class="titleSectionFilterBasic">{{filter.label}}</ion-label>
+                        <i *ngIf="GlobalFields.filtersSearch.location != GlobalFields.address" (click)="getMyAddress()" class="fas fa-location-arrow" style=" float: right; margin-top: 30px;"></i>
+                        <i *ngIf="GlobalFields.filtersSearch.location == GlobalFields.address"  (click)="getMyAddress()" class="fas fa-location-arrow" style=" float: right; margin-top: 30px;" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i>
+                        <!--<ion-input clearInput placeholder="{{filter.placeholder}}" style="width: 90%; margin: auto;" [(ngModel)]="GlobalFields.filtersSearch.location" ></ion-input>-->
+                        <div style="width: 90%; margin: auto;">
+                          <googleMapsAutocomplete [value]="GlobalFields.filtersSearch.location" [placeholder]="filter.placeholder" (addressName)="GlobalFields.filtersSearch.location=$event"></googleMapsAutocomplete>
+                        </div>
+                </div>
+
+                <span *ngIf="(filter.type == 'wp-search' || filter.type == 'text')  && !filter.show_field">
+                        <ion-label class="titleSectionFilterBasic">{{filter.label}}</ion-label>
+                        <ion-input clearInput placeholder="{{filter.placeholder}}"  [(ngModel)]="GlobalFields.filtersSearch.search_keywords"></ion-input>
+                </span>
+
+                <span *ngIf="(filter.type == 'wp-search' || filter.type == 'text' ) && filter.show_field=='job_title'">
+                        <ion-label class="titleSectionFilterBasic">{{filter.label}}</ion-label>
+                        <ion-input clearInput placeholder="{{filter.placeholder}}"  [(ngModel)]="GlobalFields.filtersSearch.name"></ion-input>
+                </span>
+
+                <span *ngIf="filter.type == 'date'">
+                   <ion-label class="titleSectionFilterBasic">{{filter.label}}</ion-label>
+                    <ion-item style="">
+                      <ion-datetime display-format="MMM DD, YYYY HH:mm" placeholder="{{'SELECT' | translate}}" [(ngModel)]="GlobalFields.filtersSearch.date"></ion-datetime>
+                    </ion-item>
+                </span>
+
+                <span *ngIf="filter.type == 'dropdown' || filter.type == 'checkboxes'">
+
+                  <!-- categories-->
+                    <div *ngIf="filter.show_field == 'job_category' && GlobalFields.selectedTypeDetail.categories">
+                      <ion-label class="titleSectionFilterBasic">{{filter.label}}</ion-label>
+                      <ion-item style="padding:0px;">
+                        <ion-select multiple="true" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"  [(ngModel)]="GlobalFields.filtersSearch.categories" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringCategories()}}">
+                          <ion-select-option  *ngFor="let c of GlobalFields.selectedTypeDetail.categories" value="{{c.name}}">{{c.name}}</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+
+
+                    <!-- region-->
+                    <div *ngIf="filter.show_field == 'region'">
+                      <ion-label >{{filter.label}}</ion-label>
+                      <ion-item style="padding:0px;">
+                        <ion-select [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate" [(ngModel)]="GlobalFields.filtersSearch.region" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringRegions()}}">
+                          <ion-select-option  *ngFor="let r of GlobalFields.regions" value="{{r.name}}">{{r.name}}</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+
+                    <!-- tags -->
+                    <div  *ngIf="filter.show_field == 'job_tags'">
+                     <ion-label class="titleSectionFilterBasic">{{filter.label}}</ion-label>
+                      <ion-item *ngFor="let t of GlobalFields.filtersSearch.tags" style=" font-size: 10pt; padding: 0; margin-bottom: -11px; background-color: transparent;">
+                        <ion-label>{{t.val.name}}</ion-label>
+                        <ion-checkbox slot="end" [(ngModel)]="t.isChecked" ></ion-checkbox>
+                      </ion-item>
+                    </div>
+
+                </span>
+
+
+                <span *ngIf="(filter.type == 'dropdown' || filter.type == 'checkboxes' ) && filter.show_field != 'job_tags' && filter.show_field != 'job_category' && filter.show_field != 'job_region' && filter.show_field != 'region'">
+
+                    <!-- Dropdown Custom taxonomies fields -->
+                    <div *ngIf="!GlobalFields.keyIsACustomField(filter.show_field)">
+                      <ion-label>{{filter.label}}</ion-label>
+                      <ion-item style="padding:0px;">
+                        <ion-select [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate" [(ngModel)]="GlobalFields.getCustomTaxonomiesByKey(filter.show_field).selected" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringTaxonomies(filter.show_field)}}">
+                          <ion-select-option  *ngFor="let t of GlobalFields.getCustomTaxonomiesByKey(filter.show_field).options" value="{{t.name}}">{{t.name}}</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+
+                    <!-- Dropdown Custom fields fields -->
+                    <div *ngIf="GlobalFields.getCustomFieldsByKey(filter.show_field)">
+                      <ion-label>{{filter.label}}</ion-label>
+                      <ion-item style="padding:0px;">
+                        <ion-select  [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"   [(ngModel)]="GlobalFields.getCustomFieldsByKey(filter.show_field).selected" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringCustomFields(filter.show_field)}}">
+                          <ion-select-option  *ngFor="let c of GlobalFields.getCustomFieldsByKey(filter.show_field).options" value="{{c.label}}">{{c.label}}</ion-select-option>
+                        </ion-select>
+                      </ion-item>
+                    </div>
+                </span>
+
+                <!-- Text Custom text fields -->
+                <span *ngIf="filter.show_field && (filter.type == 'wp-search' || filter.type == 'text' )">
+                    <i class="fas fa-search iconsChoices"></i><ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+                    <ion-input clearInput placeholder="{{filter.placeholder}}" [(ngModel)]="GlobalFields.getCustomTextFieldsByKey(filter.show_field).selected"></ion-input>
+                </span>
+
+                <!-- proximity -->
+                <span *ngIf="filter.type == 'proximity'">
+                    <ion-label class="titleSectionFilterBasic">{{filter.label}}</ion-label>
+                    {{GlobalFields.filtersSearch.range}} <span *ngIf="GlobalFields.getUnitRangeProximity('basic')=='imperial'">Miles</span> <span *ngIf="GlobalFields.getUnitRangeProximity('basic')!='imperial'">Km</span>
+                    <ion-item>
+                      <ion-range [(ngModel)]="GlobalFields.filtersSearch.range"
+                                 min="{{GlobalFields.getMinimumProximity('basic')}}"
+                                 max="{{GlobalFields.getMaximumProximity('basic')}}"
+                                 step="{{GlobalFields.getStepProximity('basic')}}"
+                                 color="secondary" pin="true"></ion-range>
+                    </ion-item>
+                </span>
+
+            </div>
+
+            <ion-button color="light" expand="block" fill="outline" style="margin-top:20px; border-radius: 5px;" (click)="searchByBasicSearchFilter()"><i class="fas fa-search" style="font-size: 16px; padding: 10px; margin-bottom: 2px;"></i> {{'SEARCH' | translate}}</ion-button>
+
+        </div>
+
+        <span class="swipe swipeDown swipeSpan">{{'SWIPE_SEE_MORE' | translate}} <br> <i class="fas fa-chevron-down"></i></span>
+
+    </div>
+
+
+  <!-- listings by types -->
+
+    <!-- Loading-->
+    <div *ngIf="byTypesListings==undefined" class="section">
+      <ion-list style="padding: 5px">
+        <div *ngFor="let items of [1,2,3]">
+          <ion-thumbnail style="width: 100%; height: 100px;">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+            <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+            <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+          </ion-label>
+          <br>
+        </div>
+      </ion-list>
+    </div>
+
+
+    <span *ngFor="let type of GlobalFields.listingTypesDetails;  let j = index">
+      <!-- Loading-->
+      <div *ngIf="byTypesListings[j]==undefined" class="section">
+        <ion-list style="padding: 5px">
+          <div *ngFor="let items of [1,2,3]">
+            <ion-thumbnail style="width: 100%; height: 100px;">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+              <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+              <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+            </ion-label>
+            <br>
+          </div>
+        </ion-list>
+      </div>
+
+      <div class="section" *ngIf="byTypesListings[j] && byTypesListings[j].length>0" style="padding-bottom: 0;">
+          <ion-label class="titleSection">
+              {{ 'EXPLORE' | translate }}  {{type.post_title}}
+              <ion-button  *ngIf="GlobalFields.getLanguageLayout()=='ltr'" color="light" fill="clear" class="btnLight" style="margin-top: 0px; position: absolute; right: 0; font-size: 10pt;" (click)="searchByType(type.ID)">{{'SEE_ALL' | translate}} ></ion-button>
+              <ion-button  *ngIf="GlobalFields.getLanguageLayout()=='rtl'" color="light" fill="clear" class="btnLight" style="margin-top: 0px; position: absolute; left: 0; font-size: 10pt;" (click)="searchByType(type.ID)">{{'SEE_ALL' | translate}} ></ion-button>
+          </ion-label>
+          <div *ngIf="!loadingByTypes && byTypesListings && byTypesListings.length>0">
+              <ion-slides [options]="slideOpts2">
+                  <ion-slide *ngFor="let listing of byTypesListings[j];  let i = index"  style="padding: 5px;">
+                      <page-listingList [listing]="listing" [type]="'1'" [search]="false"></page-listingList>
+                  </ion-slide>
+              </ion-slides>
+          </div>
+        <!-- Loading -->
+          <div *ngIf="loadingByTypes">
+            <ion-slides  [options]="slideOpts2">
+              <ion-slide *ngFor="let items of [1,2,3]">
+                <ion-thumbnail style="width: 100%; height: 100px;">
+                  <ion-skeleton-text animated></ion-skeleton-text>
+                </ion-thumbnail>
+                <ion-label>
+                  <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+                  <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                  <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+                </ion-label>
+                <br>
+              </ion-slide>
+            </ion-slides>
+          </div>
+      </div>
+    </span>
+
+
+
+
+  <!-- recent listings -->
+
+  <ion-grid class="section">
+      <ion-label class="titleSection">{{ 'RECENT_LISTINGS' | translate }}</ion-label>
+    <!-- Loading-->
+    <ion-row *ngIf="recentListings==undefined" >
+      <ion-col col-6>
+          <ion-list style="padding: 5px">
+            <div *ngFor="let items of [1,2,3]">
+              <ion-thumbnail style="width: 100%; height: 100px;">
+                <ion-skeleton-text animated></ion-skeleton-text>
+              </ion-thumbnail>
+              <ion-label>
+                <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+                <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+                <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+              </ion-label>
+              <br>
+            </div>
+          </ion-list>
+      </ion-col>
+      <ion-col col-6>
+        <ion-list style="padding: 5px">
+          <div *ngFor="let items of [1,2,3]">
+            <ion-thumbnail style="width: 100%; height: 100px;">
+              <ion-skeleton-text animated></ion-skeleton-text>
+            </ion-thumbnail>
+            <ion-label>
+              <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+              <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+              <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+            </ion-label>
+            <br>
+          </div>
+        </ion-list>
+      </ion-col>
+    </ion-row>
+
+      <ion-row  style="margin-right: 0;">
+        <ion-col col-6 style="padding-right: 5px">
+        <span *ngFor="let listing of recentListings;  let i = index">
+            <div *ngIf="i%2==0" style="height: 180px;">
+                <page-listingList [listing]="listing" [type]="'1'"  [search]="false"></page-listingList>
+            </div>
+        </span>
+      </ion-col>
+
+      <ion-col col-6 style="padding-left: 5px">
+        <span *ngFor="let listing of recentListings;  let i = index">
+            <div style="height: 180px;" *ngIf="i%2!=0">
+                <page-listingList [listing]="listing" [type]="'1'"  [search]="false" ></page-listingList>
+            </div>
+        </span>
+      </ion-col>
+
+    </ion-row>
+  </ion-grid>
+
+
+
+  <!-- Recent posts -->
+
+  <div *ngIf="posts && posts.length>0" class="section">
+      <ion-label class="titleSection" style="margin-bottom: 10px">{{ 'EXPLORE_POST' | translate }}</ion-label>
+      <ion-button  *ngIf="GlobalFields.getLanguageLayout()=='ltr'" color="light" fill="clear" class="btnLight" style="margin-top: 0px; position: absolute; right: 0; font-size: 10pt;" [routerLink]="'posts'">{{'SEE_ALL' | translate}} ></ion-button>
+      <ion-button  *ngIf="GlobalFields.getLanguageLayout()=='rtl'" color="light" fill="clear" class="btnLight" style="margin-top: 0px; position: absolute; left: 0; font-size: 10pt;"  [routerLink]="'posts'">{{'SEE_ALL' | translate}} ></ion-button>
+    <ion-row  class="filters" *ngIf="posts">
+          <ion-col no-padding col-12>
+              <ion-slides   [options]="slideOpts1" >
+                  <ion-slide *ngFor="let post of posts" (click)="openModalPost(post)">
+
+                      <ion-card class="card card-ios" >
+
+                        <img-loader *ngIf="post.img_cover" [src]="post.img_cover" useImg [imgAttributes]="'postImg'"></img-loader>
+
+<!--
+                        <div *ngIf="post.img_cover"  class="postImg" [style.background]="'url(' + post.img_cover + ')'"></div>
+ -->                         <div *ngIf="!post.img_cover"  class="postImg" [style.background]="'url(' + GlobalFields.site_details.placeholderImgUrl + ')'"></div>
+
+                          <ion-card-content style="text-align: left;">
+                              <ion-label style="padding-left: 5px; font-size: 12pt; color: black" *ngIf="post.title.rendered && post.title.rendered">{{post.title.rendered}}</ion-label>
+                              <p [innerHTML]="post.excerpt.rendered" style="font-size: smaller; color: #979797; padding: 5px; padding-top: 0;"></p>
+                          </ion-card-content>
+                      </ion-card>
+
+                  </ion-slide>
+
+              </ion-slides>
+          </ion-col>
+      </ion-row>
+
+  </div>
+
+
+
+    <div id="check-point"></div>  <!-- Check point to the bottom -->
+</ion-content>

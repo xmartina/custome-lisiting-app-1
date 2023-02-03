@@ -1,0 +1,49 @@
+
+.googleAutoCompleteInput{
+  border: 0;
+  border-bottom: solid 1px #e4e3e6;
+  padding: 5px;
+  width: 100%;
+}
+
+.openStreetResultsBox{
+  background-color: #fff;
+  position: absolute!important;
+  z-index: 1000;
+  border-radius: 2px;
+  border-top: 1px solid #d9d9d9;
+  font-family: Arial,sans-serif;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  max-height: 175px;
+  overflow: auto;
+}
+
+.openStreetResultsBox ul{
+  margin: 0;
+  padding: 0;
+}
+
+.openStreetResultsBox li{
+  list-style: none;
+  padding: 7px;
+}
+.openStreetResultsBox li:active{
+ background-color: #dcdcdc;
+}
+.openStreetResultsBox i{
+  margin-right: 10px;
+  color: #777777;
+}
+
+.cancelText{
+  position: absolute;
+  top: 5px;
+  right: 3px;
+  border-radius: 100px;
+  background-color: #ffffff;
+  padding: 5px;
+  color: #666666;
+}

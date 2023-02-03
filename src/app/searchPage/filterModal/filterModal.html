@@ -1,0 +1,161 @@
+<ion-header style="background-color: white; border: none; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);">
+  <ion-toolbar *ngIf="GlobalFields.listingTypesDetails">
+    <ion-row class="filters">
+      <div style="background-color: white; position: fixed; padding: 10px; text-align: center; width: 30px; height: 100%;">
+        <ion-icon name="close" style="font-size: 20px; margin-top: -2px;" (click)="closeModal()"></ion-icon>
+      </div>
+      <ul col-12 style="padding: 0; margin: 0; margin-bottom: -5px; margin-left: 40px; display: inline-block; display:inline; display: inline-flex; height: fit-content; width: 100%; overflow: scroll;" dir="{{GlobalFields.getLanguageLayout()}}">
+        <li *ngFor="let type of GlobalFields.listingTypesDetails" dir="{{GlobalFields.getLanguageLayout()}}"
+            [class]="'typesListHorizontal' + isSelected(type.ID)"
+            [ngStyle]="isSelectedGetPrimaryColor(type.ID)"
+            (click)="GlobalFields.filtersSearch.selectedType = type.ID; clearFilters()">
+          <span *ngIf="type.post_title">{{type.post_title}}</span>
+        </li>
+      </ul>
+    </ion-row>
+  </ion-toolbar>
+</ion-header>
+
+
+
+<ion-content *ngIf="GlobalFields.selectedTypeDetail"  [ngStyle]="GlobalFields.getBodyColorBackgroundJson()"  dir="{{GlobalFields.getLanguageLayout()}}">
+
+
+  <div style="padding: 15px; height: 100%; width: 100%; margin-top: 10px; margin-bottom: 130px">
+
+    <div *ngFor="let filter of GlobalFields.selectedTypeDetail.case27_listing_type_search_page.advanced.facets"  class="filterSection">
+
+
+
+      <div *ngIf="filter.type == 'location'" >
+            <i class="fas fa-map-marker-alt iconsChoices"></i><ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+            <i *ngIf="GlobalFields.filtersSearch.location != GlobalFields.address" (click)="getMyAddress()" class="fas fa-location-arrow" style=" float: right; margin-top: 40px;"></i>
+            <i *ngIf="GlobalFields.filtersSearch.location == GlobalFields.address"  (click)="getMyAddress()" class="fas fa-location-arrow" style=" float: right; margin-top: 40px;" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i>
+          <!--  <ion-input clearInput placeholder="{{filter.placeholder}}"  [(ngModel)]="GlobalFields.filtersSearch.location" ></ion-input> -->
+            <div style="width: 90%; margin: auto;">
+              <googleMapsAutocomplete [value]="GlobalFields.filtersSearch.location" [placeholder]="filter.placeholder" (addressName)="GlobalFields.filtersSearch.location=$event"></googleMapsAutocomplete>
+            </div>
+      </div>
+
+      <span *ngIf="(filter.type == 'wp-search' || filter.type == 'text' ) && !filter.show_field">
+            <i class="fas fa-search iconsChoices"></i><ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+            <ion-input clearInput placeholder="{{filter.placeholder}}"  [(ngModel)]="GlobalFields.filtersSearch.search_keywords"></ion-input>
+      </span>
+
+      <span *ngIf="(filter.type == 'wp-search' || filter.type == 'text' ) && filter.show_field=='job_title'">
+            <i class="fas fa-search iconsChoices"></i><ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+            <ion-input clearInput placeholder="{{filter.placeholder}}"  [(ngModel)]="GlobalFields.filtersSearch.name"></ion-input>
+      </span>
+
+
+      <span *ngIf="filter.type == 'date'">
+        <i class="fas fa-calendar-alt iconsChoices"></i> <ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+        <ion-item style="">
+          <ion-datetime display-format="MMM DD, YYYY HH:mm" placeholder="{{'SELECT' | translate}}" [(ngModel)]="GlobalFields.filtersSearch.date"></ion-datetime>
+        </ion-item>
+      </span>
+
+      <span *ngIf="filter.type == 'dropdown' || filter.type == 'checkboxes'">
+
+        <!-- categories-->
+        <div *ngIf="filter.show_field == 'job_category' && GlobalFields.selectedTypeDetail.categories">
+          <i class="fas fa-tasks iconsChoices"></i> <ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+          <i *ngIf="GlobalFields.filtersSearch.categories && GlobalFields.filtersSearch.categories.length > 0" (click)="GlobalFields.filtersSearch.categories = []" class="far fa-trash-alt rightClearBtn"></i>
+          <ion-item style="padding:0px; width: calc(100% - 30px)">
+            <ion-select multiple="true" [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"  [(ngModel)]="GlobalFields.filtersSearch.categories" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringCategories()}}">
+              <ion-select-option  *ngFor="let c of GlobalFields.selectedTypeDetail.categories" value="{{c.name}}">{{c.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <!-- region-->
+        <div *ngIf="filter.show_field == 'region'">
+          <i class="fas fa-tasks iconsChoices"></i> <ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+          <i *ngIf="GlobalFields.filtersSearch.region" (click)="GlobalFields.filtersSearch.region = undefined" class="far fa-trash-alt rightClearBtn"></i>
+          <ion-item style="padding:0px; width: calc(100% - 30px)">
+            <ion-select [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate" [(ngModel)]="GlobalFields.filtersSearch.region" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringRegions()}}">
+              <ion-select-option  *ngFor="let r of GlobalFields.regions" value="{{r.name}}">{{r.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <!-- tags -->
+        <div  *ngIf="filter.show_field == 'job_tags'">
+         <i class="far fa-check-circle iconsChoices"></i> <ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+          <ion-item *ngFor="let t of GlobalFields.filtersSearch.tags" style=" font-size: 10pt; padding: 0; margin-bottom: -11px; background-color: transparent;">
+            <ion-label>{{t.val.name}}</ion-label>
+            <ion-checkbox slot="end" [(ngModel)]="t.isChecked" ></ion-checkbox>
+          </ion-item>
+        </div>
+
+
+      </span>
+
+
+      <!--Custom fields Dropdowns -->
+      <span *ngIf="(filter.type == 'dropdown' || filter.type == 'checkboxes' ) && filter.show_field != 'job_tags' && filter.show_field != 'job_category' && filter.show_field != 'job_region' && filter.show_field != 'region'">
+
+        <!-- Dropdown Custom taxonomies fields -->
+        <div *ngIf="!GlobalFields.keyIsACustomField(filter.show_field) && GlobalFields.getCustomTaxonomiesByKey(filter.show_field)">
+          <i class="fas fa-tasks iconsChoices"></i>  <ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+          <i *ngIf="GlobalFields.getCustomTaxonomiesByKey(filter.show_field).selected" (click)="GlobalFields.getCustomTaxonomiesByKey(filter.show_field).selected = []" class="far fa-trash-alt rightClearBtn"></i>
+          <ion-item style="padding:0px; width: calc(100% - 30px)">
+            <ion-select [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"   [(ngModel)]="GlobalFields.getCustomTaxonomiesByKey(filter.show_field).selected" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringTaxonomies(filter.show_field)}}">
+              <ion-select-option  *ngFor="let t of GlobalFields.getCustomTaxonomiesByKey(filter.show_field).options" value="{{t.name}}">{{t.name}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+        <!-- Dropdown Custom fields fields -->
+        <div *ngIf="GlobalFields.keyIsACustomField(filter.show_field) && GlobalFields.getCustomFieldsByKey(filter.show_field)">
+          <i class="fas fa-tasks iconsChoices"></i>  <ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+          <i *ngIf="GlobalFields.getCustomFieldsByKey(filter.show_field).selected" (click)="GlobalFields.getCustomFieldsByKey(filter.show_field).selected = []" class="far fa-trash-alt rightClearBtn"></i>
+          <ion-item style="padding:0px; width: calc(100% - 30px)">
+            <ion-select  [cancelText]="'CANCEL' | translate" [okText]="'SELECT' | translate"   [(ngModel)]="GlobalFields.getCustomFieldsByKey(filter.show_field).selected" placeholder="{{'SELECT' | translate}}" selectedText="{{toStringCustomFields(filter.show_field)}}">
+              <ion-select-option  *ngFor="let c of GlobalFields.getCustomFieldsByKey(filter.show_field).options" value="{{c.label}}">{{c.label}}</ion-select-option>
+            </ion-select>
+          </ion-item>
+        </div>
+
+      </span>
+
+      <!-- Text Custom text fields -->
+      <span *ngIf="filter.show_field && (filter.type == 'wp-search' || filter.type == 'text' ) && GlobalFields.getCustomTextFieldsByKey(filter.show_field)">
+            <i class="fas fa-search iconsChoices"></i><ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+            <ion-input clearInput placeholder="{{filter.placeholder}}" [(ngModel)]="GlobalFields.getCustomTextFieldsByKey(filter.show_field).selected"></ion-input>
+      </span>
+
+
+
+      <!-- proximity -->
+      <span *ngIf="filter.type == 'proximity'">
+        <i class="far fa-dot-circle iconsChoices"> </i> <ion-label class="titleSectionFilter">{{filter.label}}</ion-label>
+        {{GlobalFields.filtersSearch.range}} <span *ngIf="GlobalFields.getUnitRangeProximity('advanced')=='imperial'">Miles</span> <span *ngIf="GlobalFields.getUnitRangeProximity('advanced')!='imperial'">Km</span>
+        <ion-item>
+          <ion-range [(ngModel)]="GlobalFields.filtersSearch.range"
+                     min="{{GlobalFields.getMinimumProximity('advanced')}}"
+                     max="{{GlobalFields.getMaximumProximity('advanced')}}"
+                     step="{{GlobalFields.getStepProximity('advanced')}}"
+                     color="secondary" pin="true"></ion-range>
+        </ion-item>
+      </span>
+
+
+    </div>
+
+
+    <div class="filterSection" style="text-align: right; color: #f13224;" (click)="clearFilters()"><i class="far fa-trash-alt"></i> Clear the filter</div>
+
+  </div>
+
+
+
+</ion-content>
+
+
+<ion-footer style="display: inline-flex; padding: 5px; padding-bottom: 20px; background-color: white; border: none;"   dir="{{GlobalFields.getLanguageLayout()}}">
+  <button class="buttonSearch" [ngStyle]="GlobalFields.getPrimaryColorJson()" (click)="getFilteredListingsFirstTime(); closeModal()">
+    <ion-icon style="margin-bottom:-3px;" name="search"></ion-icon> <ion-text style="margin-left: 8px;">{{'SHOW_RESULTS' | translate}}</ion-text>
+  </button>
+</ion-footer>
+

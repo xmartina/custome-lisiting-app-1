@@ -1,0 +1,41 @@
+<ion-header translucent="true" mode="{{GlobalFields.mode}}" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/menuPage"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{'NOTIFICATIONS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content class="cards-bg social-cards" [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <ion-header collapse="condense" dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-toolbar style="padding: 15px">
+      <ion-title size="large">{{'NOTIFICATIONS' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div style="padding: 15px;" *ngIf="GlobalFields.notifications && GlobalFields.notifications.length>0">
+
+    <ion-list dir="{{GlobalFields.getLanguageLayout()}}">
+      <ion-item *ngFor="let notif of GlobalFields.notifications" style="margin-bottom: 10px">
+        <span *ngIf="notif.payload" style="width: 100%">
+          <ion-label><b>{{notif.payload.title}}</b></ion-label>
+          <p>{{notif.payload.body}}</p>
+          <div style="width: 100%; text-align: right" *ngIf="notif.payload && notif.payload.launchURL">
+            <a (click)="openLink(notif.payload.launchURL)">{{'EXPLORE' | translate}}</a>
+          </div>
+        </span>
+      </ion-item>
+    </ion-list>
+
+  </div>
+
+  <div style="padding: 15px;"
+       *ngIf="!GlobalFields.notifications || (GlobalFields.notifications && GlobalFields.notifications.length==0)"
+       dir="{{GlobalFields.getLanguageLayout()}}">
+    {{'NO_RESULTS' | translate}}
+  </div>
+
+</ion-content>

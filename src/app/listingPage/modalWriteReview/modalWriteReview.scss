@@ -1,0 +1,66 @@
+.tableRowThinner {
+  font-size: 10pt;
+}
+
+.btnSubmit {
+  width: 100%;
+  padding: 10px;
+  font-size: 15pt;
+  border-radius: 5px;
+}
+
+.formContainer {
+  position: fixed;
+  top: 15%;
+  width: calc(90% - 20px);
+  border-radius: 5px;
+  left: 30px;
+  padding: 15px;
+  background-color: white;
+}
+
+.formLabel {
+  margin-top: 0px;
+  margin-right: 0px;
+  margin-bottom: 0px;
+  margin-left: 0px;
+  word-wrap: break-word;
+  font-size: 32px;
+  font-weight: bolder;
+  line-height: 1.125em;
+}
+
+.empty {
+  color: rgba(45, 45, 45, .21);
+}
+
+.colored {
+  color: #ffc106;
+}
+
+.reviewImg {
+  margin: 5px;
+  object-fit: cover;
+  width: 100px;
+  height: 100px;
+}
+
+.newReviewImg {
+  margin: 5px;
+  object-fit: cover;
+  width: 50px;
+  height: 50px;
+}
+
+.imgContainerInline{
+  display: inline;
+  width: fit-content;
+}
+
+.btnSendReview{
+  width: 100%;
+  padding: 10px;
+  font-size: 15pt;
+  border-radius: 5px;
+  box-shadow: rgba(0, 0, 0, 0.12) 0px 3px 10px;
+}

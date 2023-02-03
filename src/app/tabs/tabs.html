@@ -1,0 +1,97 @@
+
+
+
+<ion-tabs *ngIf="!GlobalFields.loading" mode="ios" style="height: 100%">
+
+  <!-- Loading-->
+  <ion-tab-bar *ngIf="!GlobalFields.msgsSelected && GlobalFields.loading"  mode="ios" slot="bottom"   dir="{{GlobalFields.getLanguageLayout()}}" style="border-top: none; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);">
+    <ion-tab-button class="tab" mode="ios">
+      <ion-skeleton-text animated style="width: 20%; height: 30px; margin-right: 15px; margin-left: 15px"></ion-skeleton-text>
+    </ion-tab-button>
+    <ion-tab-button class="tab" mode="ios">
+      <ion-skeleton-text animated style="width: 20%; height: 30px; margin-right: 15px; margin-left: 15px"></ion-skeleton-text>
+    </ion-tab-button>
+    <ion-tab-button class="tab" mode="ios">
+      <ion-skeleton-text animated style="width: 20%; height: 30px; margin-right: 15px; margin-left: 15px"></ion-skeleton-text>
+    </ion-tab-button>
+    <ion-tab-button class="tab" mode="ios">
+      <ion-skeleton-text animated style="width: 20%; height: 30px; margin-right: 15px; margin-left: 15px"></ion-skeleton-text>
+    </ion-tab-button>
+    <ion-tab-button class="tab" mode="ios">
+      <ion-skeleton-text animated style="width: 20%; height: 30px; margin-right: 15px; margin-left: 15px"></ion-skeleton-text>
+    </ion-tab-button>
+  </ion-tab-bar>
+
+  <!-- Tabs -->
+  <ion-tab-bar *ngIf="GlobalFields.site_details.navigationType==1 && GlobalFields.showTabs && !GlobalFields.loading"  mode="ios" slot="bottom"   dir="{{GlobalFields.getLanguageLayout()}}" style="border-top: none; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);">
+    <ion-tab-button class="tab" mode="ios"[routerLink]="['/tabs/home']" [ngStyle]="getStyleSelectedTab('home')">
+        <i class="{{GlobalFields.site_details.homeTabIcon}}" style="font-size: 22px"></i>
+    </ion-tab-button>
+
+    <ion-tab-button class="tab" *ngIf="GlobalFields.site_details.showCategoriesList"
+                    [routerLink]="['/tabs/categoriesList']" [ngStyle]="getStyleSelectedTab('categoriesList')">
+        <i class="{{GlobalFields.site_details.categoriesTabIcon}}" style="font-size: 22px"></i>
+    </ion-tab-button>
+
+    <ion-tab-button class="tab" mode="ios" [routerLink]="['/tabs/search']" [ngStyle]="getStyleSelectedTab('search')" *ngIf="GlobalFields.site_details && GlobalFields.site_details.searchTabIcon">
+        <i class="{{GlobalFields.site_details.searchTabIcon}}" style="font-size: 22px"></i>
+    </ion-tab-button>
+
+    <ion-tab-button class="tab" mode="ios" color="primary" *ngIf="GlobalFields.site_details && GlobalFields.site_details.faPlusCustomTab" (click)="openAddModal()">
+        <i *ngIf="showCircleAsPlusIcon()"
+           class="{{GlobalFields.site_details.faPlusCustomTab}}" style="font-size: 20px;
+                padding: 10px;
+                padding-left: 0px;
+                padding-right: 0px;
+                border-radius: 50px;
+                width: 40px;
+                color: white;
+                box-shadow: 0 0px 6px rgba(0,0,0,.15)!important;
+            "
+           [ngStyle]="GlobalFields.getPrimaryColorBackgroundJson()"></i>
+
+        <i *ngIf="!showCircleAsPlusIcon()"
+           class="{{GlobalFields.site_details.faPlusCustomTab}}"
+           style="font-size: 20px;
+                padding: 10px;
+                padding-left: 12px;
+                padding-right: 10px;
+                border-radius: 50px;
+                color: #8c8c8c;
+                width: 40px;"></i>
+    </ion-tab-button>
+
+    <ion-tab-button class="tab" mode="ios" *ngIf="GlobalFields.site_details && GlobalFields.site_details.customPageUrl && GlobalFields.site_details.faIconCustomTab"
+                    [routerLink]="['/tabs/customPage']" [ngStyle]="getStyleSelectedTab('customPage')">
+        <i class="{{GlobalFields.site_details.faIconCustomTab}}" style="font-size: 22px"></i>
+    </ion-tab-button>
+
+    <ion-tab-button class="tab" mode="ios" *ngIf="GlobalFields.site_details && GlobalFields.site_details.shopTabIcon"
+            [routerLink]="['/tabs/shop']" [ngStyle]="getStyleSelectedTab('shop')">
+      <i class="{{GlobalFields.site_details.shopTabIcon}}" style="font-size: 22px"></i>
+    </ion-tab-button>
+
+  <ion-tab-button class="tab" mode="ios" *ngIf="GlobalFields.site_details && GlobalFields.site_details.msgTabIcon"
+            [routerLink]="['/tabs/messages']" [ngStyle]="getStyleSelectedTab('messages')">
+        <i class="{{GlobalFields.site_details.msgTabIcon}}" style="font-size: 22px"></i>
+    </ion-tab-button>
+
+    <ion-tab-button class="tab" mode="ios" [routerLink]="['/tabs/menuPage']" [ngStyle]="getStyleSelectedTab('menuPage')">
+        <i *ngIf="!GlobalFields.isLoggedIn || (! GlobalFields.profile || !GlobalFields.profile.user)" class="{{GlobalFields.site_details.profileTabIcon}}"  style="font-size: 22px"></i>
+        <img *ngIf="GlobalFields.isLoggedIn && GlobalFields.profile && GlobalFields.profile.user" src="{{GlobalFields.profile.user.avatar}}" style="height: 25px; border-radius: 55px;">
+    </ion-tab-button>
+
+  </ion-tab-bar>
+
+</ion-tabs>
+
+
+
+
+<!--
+    <ion-fab vertical="bottom" horizontal="center" slot="fixed">
+        <ion-fab-button  color="primary" (click)="openAddModal()">
+            <i class="fas fa-plus "   style="font-size: 22px"></i>
+        </ion-fab-button>
+    </ion-fab>
+-->

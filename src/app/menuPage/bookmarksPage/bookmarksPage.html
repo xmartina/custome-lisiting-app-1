@@ -1,0 +1,51 @@
+<ion-header dir="{{GlobalFields.getLanguageLayout()}}"  translucent="true" mode="{{GlobalFields.mode}}" dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-toolbar >
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="tabs/menuPage" ></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{'BOOKMARKS' | translate}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content  class="cards-bg social-cards" [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" style="background-color: white">
+
+  <ion-header collapse="condense">
+    <ion-toolbar style="padding: 15px">
+      <ion-title size="large">{{'BOOKMARKS' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <div style="padding: 15px;">
+
+      <div *ngIf="GlobalFields.isLoggedIn " style="padding-right: 0;padding-left: 0;">
+        <span *ngIf="!loadingSection && GlobalFields.bookmarkedListings">
+                 <!--   <div *ngFor="let listing of GlobalFields.bookmarkedListings;  let i = index" style="margin:0px">
+                   Commands
+                    <page-listingList [listing]="listing" [type]="'2'"  [search]="true"></page-listingList>
+                  </div>
+          -->
+                  <ion-row *ngFor="let listing of GlobalFields.bookmarkedListings;  let i = index" style="margin:0px"
+                           dir="{{GlobalFields.getLanguageLayout()}}">
+                            <ion-col size="11" style="padding: 0 !important;">
+                                <page-listingList [listing]="listing" [type]="'2'" [search]="true"></page-listingList>
+                            </ion-col>
+                            <ion-col size="1" style="padding: 0 !important; text-align: center; line-height: 100px;">
+                              <button class="btnAction" (click)="undoBookmark(listing.id)"><i class="fas fa-heart" style="color: #FF5722;"></i></button>
+                            </ion-col>
+                  </ion-row>
+
+              </span>
+          <span *ngIf="!loadingSection && (!GlobalFields.bookmarkedListings || GlobalFields.bookmarkedListings.length==0)"
+                style="padding-left: 25px;"> {{'NO_RESULTS' | translate}}</span>
+          <div *ngIf="loadingSection" style="width: 100%; text-align: center;"><i class="fas fa-spinner fa-spin"></i>
+          </div>
+      </div>
+
+
+
+
+  </div>
+
+</ion-content>

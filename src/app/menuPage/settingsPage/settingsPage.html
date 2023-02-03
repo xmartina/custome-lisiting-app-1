@@ -1,0 +1,53 @@
+<ion-header translucent="true" mode="{{GlobalFields.mode}}" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar>
+    <ion-buttons *ngIf="navigateAsRoot && GlobalFields.site_details.navigationType==2"  slot="start">
+      <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+    </ion-buttons>
+    <ion-back-button *ngIf="!navigateAsRoot" slot="start" defaultHref="tabs/menuPage" ></ion-back-button>
+    <ion-title>{{'SETTINGS' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content  class="cards-bg social-cards" [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" style="background-color: white">
+
+  <ion-header collapse="condense">
+    <ion-toolbar style="padding: 15px">
+      <ion-title size="large">{{'SETTINGS' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div style="padding: 15px;">
+
+      <div class="section">
+          <ion-label>{{'CACHE_CONTROL' | translate}}</ion-label><br><br>
+          <ion-button color="danger" (click)="clearCache()">{{'CLEAR_CACHE' | translate}}</ion-button>
+      </div>
+      <div class="sectionLittler" *ngIf="GlobalFields.site_details.privatePolicyUrl">
+          <a (click)="openLink(GlobalFields.site_details.privatePolicyUrl)" >{{'SEE_OUR_PRI_POL' | translate}}.</a>
+      </div>
+      <div class="sectionLittler" *ngIf="GlobalFields.site_details.aboutUsUrl">
+          <a (click)="openLink(GlobalFields.site_details.aboutUsUrl)" >About us.</a>
+      </div>
+      <div class="sectionLittler" *ngIf="GlobalFields.site_details.contactUsUrl">
+          <a (click)="openLink(GlobalFields.site_details.contactUsUrl)">Contact us.</a>
+      </div>
+
+      <div class="section" style="margin-top: 40px;">
+          <ion-label>{{'LANGUAGE' | translate}}</ion-label><br><br>
+          <ion-list style="margin-right: -15px; margin-left: -15px;">
+
+                  <ion-item  *ngFor="let lang of GlobalFields.languages">
+                      <ion-label><img src="../../assets/imgs/flags/{{lang.flag}}.png" height="17" width="25"/> {{lang.val}}</ion-label>
+                      <ion-checkbox (ionFocus)="setLang(lang.flag)" [(ngModel)]="lang.isChecked"></ion-checkbox>
+                  </ion-item>
+          </ion-list>
+      </div>
+
+  </div>
+
+  <div *ngIf="appVersionNumber" style="padding: 15px;">
+    App version: {{appVersionNumber}}
+  </div>
+
+</ion-content>

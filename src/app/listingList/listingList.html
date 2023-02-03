@@ -1,0 +1,197 @@
+
+<!-------------------- Box type - Airbnb style
+<ion-card *ngIf="type=='1'" [className]="getCardClass() + isWhiteBackgroundBorder()" (click)="getListingDetails(listing)" style="height: auto; margin:0px !important; border-radius: 0 !important;">
+
+    <div [className]="getImgClass()">
+        <img-loader [src]="getListingImg(listing)" useImg [imgAttributes]="getImgCachedClass(type)"></img-loader>
+    </div>
+
+    <ion-card-content style="text-align: left; padding: 4px; height: inherit; font-family: Circular,-apple-system,BlinkMacSystemFont,Roboto,Helvetica Neue,sans-serif !important;"  dir="{{GlobalFields.getLanguageLayout()}}">
+        <ion-grid class="listingType" dir="{{GlobalFields.getLanguageLayout()}}">
+            <ion-row>
+                <ion-col size="12" class="typeTitle">
+
+                    <span style="font-weight: 400;">{{GlobalFields.getListingTypeNameBySlug(listing.listing_data._case27_listing_type)}}</span>
+
+                    <!-- Sponsored
+                    <span class="sponsoredAirbnb" *ngIf="listing.listing_data._featured">Featured</span>
+
+                    <!-- reviews
+                    <span class="reviewCounterLittle" *ngIf="!listing.listing_data._case27_review_count || listing.listing_data._case27_review_count == '0'">0 {{ 'REVIEWS' | translate }}</span>
+                    <span class="reviewCounterLittle" *ngIf="listing.listing_data._case27_review_count && listing.listing_data._case27_review_count != '0'">
+                        <i class="fas fa-star starReviewAirbnb"  style="float: initial; color: #f4b34d"></i>
+                        <span class="reviewCounterLittle" style="float: initial; font-size: small;"> {{getTruncatedDecimal(listing.listing_data._case27_average_rating)}}</span>
+                        <span class="reviewCounterLittle"  style="float: initial; font-weight: 200;"> ({{listing.listing_data._case27_review_count}})</span>
+                    </span>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <p class="listingTitleAirbnb" style="-webkit-box-orient: vertical;"   dir="{{GlobalFields.getLanguageLayout()}}">{{listing.title.rendered}}  <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i> </p>
+        <p class="listingLocation" style="-webkit-box-orient: vertical;" *ngIf="listing.listing_data"   dir="{{GlobalFields.getLanguageLayout()}}">{{listing.listing_data._job_location}}</p>
+    </ion-card-content>
+</ion-card>
+-------------------->
+
+<!-------------------- Box with logo type
+<ion-card *ngIf="type=='3'" [className]="getCardClass()" (click)="getListingDetails(listing)" style="height: auto; margin:0px !important; border: 1px solid #f0f0f0; background: #676767;"  dir="{{GlobalFields.getLanguageLayout()}}">
+    <div class="backImgSquaredAndLogo"   dir="{{GlobalFields.getLanguageLayout()}}">
+
+        <img-loader [src]="getListingImg(listing)" useImg [imgAttributes]="getImgCachedClass(type)"></img-loader>
+
+        <span style="width: 100%; padding: 15px; float: left; display: inline-flex;" dir="{{GlobalFields.getLanguageLayout()}}">
+            <!-- Sponsored
+            <div class="badgeLeftFloat boltIcon" *ngIf="listing.listing_data._featured"><i class="fas fa-bolt"></i></div>
+            <!-- Type
+            <div class="badgeLeftFloat">{{GlobalFields.getListingTypeNameBySlug(listing.listing_data._case27_listing_type)}}</div>
+            <!--Reviews
+            <div class="badgeLeftFloat" *ngIf="listing.listing_data._case27_review_count && listing.listing_data._case27_review_count != '0'">
+                <span *ngFor="let star of getStartsHtml(listing.listing_data._case27_average_rating)">
+                    <ion-icon name='star{{star}}'style='float: initial; font-size: 15px'></ion-icon>
+                </span>
+            </div>
+        </span>
+        <!-- White content
+        <ion-card-content style="text-align: center; padding: 4px; background-color: white; height: 100px; position: relative; top: 100px" dir="{{GlobalFields.getLanguageLayout()}}">
+
+            <div *ngIf="listing.listing_data._job_logo" class="logoCircleImg">
+                <img-loader [src]="listing.listing_data._job_logo" useImg [imgAttributes]="getImgCachedClassByClass('logoImgCache')"></img-loader>
+            </div>
+            <p class="listingTitle" style="-webkit-box-orient: vertical; width: 100%; position: relative; top: -20px;">{{listing.title.rendered}}  <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i> </p>
+            <p class="listingLocation" style="-webkit-box-orient: vertical; width: 100%; position: relative; top: -20px;" *ngIf="listing.listing_data">{{listing.listing_data._job_location}}</p>
+        </ion-card-content>
+    </div>
+
+</ion-card>
+
+ -------------------->
+
+
+
+<!-- Box Type (Default for ML) or Box with logo Type (Alternate for ML)-->
+
+<ion-card *ngIf="listingType && type!='2'" [className]="getCardClass()" (click)="getListingDetails(listing)" dir="{{GlobalFields.getLanguageLayout()}}" style="height: auto; margin: 0px !important; ">
+    <!-- Img -->
+    <div [class.backImgBigger]="type=='1' && search" [class.backImg]="type=='1' && (!search || GlobalFields.isWhiteBackground())"
+         [class.backImgSquaredAndLogo]="type=='3'" dir="{{GlobalFields.getLanguageLayout()}}">
+        <img-loader [src]="getListingImg(listing)" useImg [imgAttributes]="getImgCachedClass(type)"></img-loader>
+        <!-- Custom fields HEADER-->
+        <span *ngIf="search && listingType.case27_listing_type_result_template.buttons">
+            <custom-fields [listing]="listing" [listingType]="listingType" [customFields]="listingType.case27_listing_type_result_template.buttons" [type]="'1'"></custom-fields>
+        </span>
+    </div>
+    <!-- White content -->
+    <ion-card-content [class.whiteContentBoxStyleOnWhiteBack]="type=='1'" [class.whiteContentBoxLogoStyle]="type=='3'" dir="{{GlobalFields.getLanguageLayout()}}">
+        <!-- Logo -->
+        <div *ngIf="type=='3' && listing.listing_data._job_logo" class="logoCircleImg">
+            <img-loader [src]="listing.listing_data._job_logo" useImg [imgAttributes]="getImgCachedClassByClass('logoImgCache')"></img-loader>
+        </div>
+        <!-- Type & reviews -->
+        <ion-grid class="listingType" dir="{{GlobalFields.getLanguageLayout()}}">
+            <ion-row>
+                <ion-col size="12" class="typeTitle">
+                    <span style="font-weight: 400;">{{listingType.post_title}}</span>
+                    <!-- Featured -->
+                    <span *ngIf="listing.listing_data._featured" class="sponsoredAirbnb">{{'FEATURED' | translate}}</span>
+                    <!-- reviews-->
+                    <span class="reviewCounterLittle" *ngIf="!listing.listing_data._case27_review_count || listing.listing_data._case27_review_count == '0'">0 {{ 'REVIEWS' | translate }}</span>
+                    <span class="reviewCounterLittle" *ngIf="listing.listing_data._case27_review_count && listing.listing_data._case27_review_count != '0'">
+                        <i class="fas fa-star starReviewAirbnb"  style="float: initial; color: #ffc106"></i>
+                        <span class="reviewCounterLittle" style="float: initial; font-size: small;"> {{getTruncatedDecimal(listing.listing_data._case27_average_rating)}}</span>
+                        <span class="reviewCounterLittle"  style="float: initial; font-weight: 200;"> ({{listing.listing_data._case27_review_count}})</span>
+                    </span>
+                </ion-col>
+            </ion-row>
+        </ion-grid>
+        <!-- Title & Location-->
+        <div [class.titleLocationLeft]="type=='1'" [class.titleLocationCenter]="type=='3'">
+            <p class="listingTitleAirbnb" dir="{{GlobalFields.getLanguageLayout()}}">{{listing.title.rendered}}  <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i> </p>
+            <p class="listingLocation" *ngIf="listing.listing_data"   dir="{{GlobalFields.getLanguageLayout()}}">{{listing.listing_data._job_location}}</p>
+        </div>
+        <span>
+            <!-- Custom fields FOOTER-->
+            <div *ngIf="search && listingType.case27_listing_type_result_template.info_fields" >
+                <custom-fields [listing]="listing" [listingType]="listingType" [customFields]="listingType.case27_listing_type_result_template.info_fields" [type]="'2'"></custom-fields>
+            </div>
+            <!-- Custom Taxonomies FOOTER-->
+            <span *ngIf="search && listingType.case27_listing_type_result_template.info_fields">
+                <custom-fields [listing]="listing" [listingType]="listingType" [customFields]="listingType.case27_listing_type_result_template.footer" [type]="'3'"></custom-fields>
+            </span>
+        </span>
+
+    </ion-card-content>
+</ion-card>
+
+
+
+
+
+
+
+
+
+<!-------------------- List type -------------------->
+<ion-row *ngIf="type=='2'" [className]="'rowListType' + isWhiteBackgroundBoxShadow()"  (click)="getListingDetails(listing)"  dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-col size="4" style="padding: 0 !important;">
+
+        <div class="backImgList" *ngIf="GlobalFields.getLanguageLayout()=='ltr'">
+            <img-loader [src]="getListingImg(listing)" useImg [imgAttributes]="getImgCachedClass(type)"  [class.imgLoaderRTL]="GlobalFields.getLanguageLayout()=='rtl'"></img-loader>
+        </div>
+        <div class="backImgList" *ngIf="GlobalFields.getLanguageLayout()=='rtl'">
+            <div class="imgRTLList" [style.background]="'url(' +getListingImg(listing)+')'"></div>
+        </div>
+
+    </ion-col>
+    <ion-col size="8" style="padding-top: 10px;">
+        <div class="listingType" *ngIf="GlobalFields.getListingTypeNameBySlug(listing.listing_data._case27_listing_type)">
+            {{GlobalFields.getListingTypeNameBySlug(listing.listing_data._case27_listing_type)}}
+            <!-- reviews-->
+            <span class="reviewCounterLittleList" *ngIf="!listing.listing_data._case27_review_count || listing.listing_data._case27_review_count == '0'"   dir="{{GlobalFields.getLanguageLayout()}}">0 {{'REVIEWS' | translate}}</span>
+            <div class="reviewsLabelHeaderLittle" *ngIf="listing.listing_data._case27_review_count && listing.listing_data._case27_review_count != '0'">
+                <label class="reviewsBoxList"   dir="{{GlobalFields.getLanguageLayout()}}">
+                    <label class="reviewScoreLittleList">{{getTruncatedDecimal(listing.listing_data._case27_average_rating)}}</label>
+                    <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="star" class="starReviewList" ></ion-icon>
+                    <label class="reviewCounterLittleList">{{'ON' | translate}} {{listing.listing_data._case27_review_count}} {{'REVIEWS' | translate}}</label>
+                </label>
+            </div>
+        </div>
+        <p class="listingTitle" style="margin:0px; line-height: 16px !important; font-size: 12px !important; max-height: 30px" >{{listing.title.rendered}}  <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i></p>
+        <p class="listingAddressLittle" *ngIf="listing.listing_data">{{listing.listing_data._job_location}}</p>
+
+        <!-- Sponsored -->
+        <div class="boltIconList" *ngIf="listing.listing_data._featured"><i class="fas fa-bolt"></i></div>
+    </ion-col>
+</ion-row>
+
+
+<!-------------------- List type with new data structure (no _key and no listingData) -------------------->
+<ion-row *ngIf="type=='2b'" [className]="'rowListType' + isWhiteBackgroundBoxShadow()"  (click)="getListingDetails(listing)"  dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-col size="4" style="padding: 0 !important;">
+
+        <div class="backImgList" *ngIf="GlobalFields.getLanguageLayout()=='ltr'">
+            <img-loader [src]="getListingImgNewStructureData(listing)" useImg [imgAttributes]="getImgCachedClass(type)"  [class.imgLoaderRTL]="GlobalFields.getLanguageLayout()=='rtl'"></img-loader>
+        </div>
+        <div class="backImgList" *ngIf="GlobalFields.getLanguageLayout()=='rtl'">
+            <div class="imgRTLList" [style.background]="'url(' +getListingImgNewStructureData(listing)+')'"></div>
+        </div>
+
+    </ion-col>
+    <ion-col size="8" style="padding-top: 10px;">
+        <div class="listingType" *ngIf="GlobalFields.getListingTypeNameBySlug(listing._case27_listing_type)">
+            {{GlobalFields.getListingTypeNameBySlug(listing._case27_listing_type)}}
+            <!-- reviews-->
+            <span class="reviewCounterLittleList" *ngIf="!listing._case27_review_count || listing._case27_review_count == '0'"   dir="{{GlobalFields.getLanguageLayout()}}">0 {{'REVIEWS' | translate}}</span>
+            <div class="reviewsLabelHeaderLittle" *ngIf="listing._case27_review_count && listing._case27_review_count != '0'">
+                <label class="reviewsBoxList"   dir="{{GlobalFields.getLanguageLayout()}}">
+                    <label class="reviewScoreLittleList">{{getTruncatedDecimal(listing._case27_average_rating)}}</label>
+                    <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="star" class="starReviewList" ></ion-icon>
+                    <label class="reviewCounterLittleList">{{'ON' | translate}} {{listing._case27_review_count}} {{'REVIEWS' | translate}}</label>
+                </label>
+            </div>
+        </div>
+        <p class="listingTitle" style="margin:0px; line-height: 16px !important; font-size: 12px !important; max-height: 30px" >{{listing.name}}  <i class="fas fa-check-circle" *ngIf="isClaimed()" style="color: #03A9F4;"></i></p>
+        <p class="listingAddressLittle">{{listing.job_location}}</p>
+
+        <!-- Sponsored -->
+        <div class="boltIconList" *ngIf="listing.featured"><i class="fas fa-bolt"></i></div>
+    </ion-col>
+</ion-row>

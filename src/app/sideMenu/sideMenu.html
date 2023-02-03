@@ -1,0 +1,105 @@
+<ion-menu menuId="appMenu" contentId="main" side="start" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <ion-header translucent="true" dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-toolbar>
+      <ion-title>
+        {{'MENU' | translate}}
+      </ion-title>
+      <ion-buttons slot="end" (click)="closeSidebar()">
+        <ion-button color="dark"><ion-icon name="close-outline"></ion-icon></ion-button>
+      </ion-buttons>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-content>
+
+    <br>
+    <ion-list>
+
+      <ion-item class="menuItem" [routerLink]="['/tabs/home']" [routerDirection]="'root'" (click)="closeSidebar()" [ngStyle]="getStyleSelectedTab('home')">
+        <i *ngIf="!GlobalFields.site_details.logoUrl" class="fas fa-home" style="font-size: 22px"></i>
+        <img *ngIf="GlobalFields.site_details.logoUrl" [src]="GlobalFields.site_details.logoUrl" style="height: 30px; width: auto; max-width: none !important; margin-right: 10px;"  >
+        <span>{{appName}}</span>
+      </ion-item>
+
+      <!--- Login -->
+      <ion-item class="menuItem" *ngIf="!GlobalFields.isLoggedIn"  [routerLink]="['/tabs/menuPage']"  [routerDirection]="'root'" [ngStyle]="getStyleSelectedTab('menuPage')" (click)="closeSidebar()">
+        <i class="{{GlobalFields.site_details.profileTabIcon}}" style="font-size: 22px"></i>
+        {{'LOGIN' | translate}}
+      </ion-item>
+      <!--- Profile -->
+      <ion-item class="menuItem" *ngIf="GlobalFields.isLoggedIn"  [routerLink]="['/tabs/menuPage']"  [routerDirection]="'root'" [ngStyle]="getStyleSelectedTab('menuPage')" (click)="closeSidebar()">
+        <img *ngIf="GlobalFields.isLoggedIn && GlobalFields.profile && GlobalFields.profile.user" src="{{GlobalFields.profile.user.avatar}}" style="height: 25px; border-radius: 55px; margin-right: 15px;">
+        {{GlobalFields.profile.user.display_name}}
+      </ion-item>
+
+    <!--  <ion-item class="menuItem" [routerLink]="['/tabs/home']" [ngStyle]="getStyleSelectedTab('home')" (click)="closeSidebar()">
+        <i class="{{GlobalFields.site_details.homeTabIcon}}" style="font-size: 22px"></i>
+        Home
+      </ion-item> -->
+
+
+      <ion-item class="menuItem" [routerLink]="['/tabs/search']" [ngStyle]="getStyleSelectedTab('search')"
+                *ngIf="GlobalFields.site_details && GlobalFields.site_details.searchTabIcon"
+                (click)="closeSidebar()">
+        <i class="{{GlobalFields.site_details.searchTabIcon}}" style="font-size: 22px"></i>
+        {{'SEARCH' | translate}}
+      </ion-item>
+
+      <ion-item class="menuItem" *ngIf="GlobalFields.site_details.showCategoriesList"
+                [ngStyle]="getStyleSelectedTab('categoriesList')"
+                [routerLink]="['/tabs/categoriesList']"
+                (click)="closeSidebar()">
+        <i class="{{GlobalFields.site_details.categoriesTabIcon}}" style="font-size: 22px"></i>
+        {{'CATEGORIES' | translate}}
+      </ion-item>
+
+      <ion-item class="menuItem"
+                *ngIf="GlobalFields.site_details && GlobalFields.site_details.customPageUrl && GlobalFields.site_details.faIconCustomTab"
+                [routerLink]="['/tabs/customPage']" [ngStyle]="getStyleSelectedTab('customPage')"
+                (click)="closeSidebar()">
+        <i class="{{GlobalFields.site_details.faIconCustomTab}}" style="font-size: 22px"></i>
+        {{GlobalFields.site_details.nameCustomTab}}
+      </ion-item>
+
+      <ion-item class="menuItem" *ngIf="GlobalFields.site_details && GlobalFields.site_details.shopTabIcon"
+                [routerLink]="['/tabs/shop']" [ngStyle]="getStyleSelectedTab('shop')"
+                (click)="closeSidebar()">
+        <i class="{{GlobalFields.site_details.shopTabIcon}}" style="font-size: 22px"></i>
+        {{'SHOP' | translate}}
+      </ion-item>
+
+      <ion-item class="menuItem" *ngIf="GlobalFields.site_details && GlobalFields.site_details.postsTabIcon"
+                [routerLink]="['/tabs/home/posts']" [routerDirection]="'root'"  [ngStyle]="getStyleSelectedTab('home/posts')"
+                (click)="GlobalFields.navigateAsRoot=true; closeSidebar()">
+        <i class="{{GlobalFields.site_details.postsTabIcon}}" style="font-size: 22px"></i>
+        {{'BLOG' | translate}}
+      </ion-item>
+
+      <ion-item class="menuItem" *ngIf="GlobalFields.site_details && GlobalFields.site_details.msgTabIcon"
+                [routerLink]="['/tabs/messages']" [ngStyle]="getStyleSelectedTab('messages')"
+                (click)="closeSidebar()">
+        <i class="{{GlobalFields.site_details.msgTabIcon}}" style="font-size: 22px"></i>
+        {{'MESSAGES' | translate}}
+      </ion-item>
+
+      <ion-item class="menuItem" [routerLink]="['/tabs/menuPage/settings']" [routerDirection]="'root'" [ngStyle]="getStyleSelectedTab('settings')"
+                (click)="GlobalFields.navigateAsRoot=true; closeSidebar()">
+        <i class="fas fa-cog" style="font-size: 22px"></i>
+        {{'SETTINGS' | translate}}
+      </ion-item>
+
+    </ion-list>
+
+    <ion-footer>
+      <div style="margin: 15px; text-align: center">
+        <button class="buttonAddListing" [ngStyle]="GlobalFields.getPrimaryColorJson()"  *ngIf="GlobalFields.site_details && GlobalFields.site_details.faPlusCustomTab" (click)="closeSidebar(); openAddModal()">
+          <i class="{{GlobalFields.site_details.faPlusCustomTab}}"></i> {{'CREATE_LISTING' | translate}}
+        </button>
+      </div>
+    </ion-footer>
+
+  </ion-content>
+
+
+</ion-menu>

@@ -1,0 +1,116 @@
+
+<ion-header translucent="true" mode="{{GlobalFields.mode}}" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar>
+    <!-- If Side menu is used-->
+    <ion-buttons *ngIf="GlobalFields.site_details.navigationType==2" slot="start">
+      <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'MENU' | translate}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+
+<!-- <ion-content  class="cards-bg social-cards"   [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" [scrollEvents]="true" (ionScroll)="onScrollHideHeader($event)">-->
+<ion-content class="cards-bg social-cards" [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <ion-header collapse="condense">
+    <ion-toolbar style="padding: 15px">
+      <ion-title size="large">{{'MENU' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+
+  <!-- [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" -->
+
+  <!--- Profile -->
+  <div *ngIf="GlobalFields.isLoggedIn">
+    <div style="padding: 10px; margin-bottom: 30px; margin-top: 15px">
+      <ion-grid>
+        <ion-row>
+          <ion-col size="8">
+            <ion-label class="nameLabel">{{GlobalFields.profile.user.display_name}}</ion-label>
+            <br>
+            <div>{{GlobalFields.profile.user.email}}</div>
+          </ion-col>
+          <ion-col size="4">
+            <img src="{{GlobalFields.profile.user.avatar}}"
+                 style="float: right; height: 50px; border-radius: 55px;">
+          </ion-col>
+        </ion-row>
+      </ion-grid>
+    </div>
+  </div>
+
+  <ion-list dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-item style="color: #484848;" [disabled]="!GlobalFields.isLoggedIn" button
+              [routerLink]="['/tabs/menuPage/myListingsPage']" [detail]="false">
+      <ion-icon name="list-outline" slot="start" style="height: 25px;"></ion-icon>
+      <ion-label>
+        {{'MY_LISTINGS' | translate}}
+      </ion-label>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-back-outline" slot="end" style="height: 20px;"></ion-icon>
+    </ion-item>
+    <ion-item style="color: #484848;" [disabled]="!GlobalFields.isLoggedIn" button [detail]="false"
+              [routerLink]="['/tabs/menuPage/bookmarksPage']">
+      <ion-icon name="heart-outline" slot="start" style="height: 25px;"></ion-icon>
+      <ion-label>
+        {{'BOOKMARKS' | translate}}
+      </ion-label>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-back-outline" slot="end" style="height: 20px;"></ion-icon>
+    </ion-item>
+
+    <!--<ion-item style="color: #484848;" button [detail]="false" [routerLink]="['/tabs/shop/cart']">
+      <ion-icon name="cart-outline" slot="start" style="height: 25px;"></ion-icon>
+      <ion-label>
+        Cart
+      </ion-label>
+      <ion-icon name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+    </ion-item>-->
+    <ion-item *ngIf="GlobalFields.site_details.enableNotifications" style="color: #484848;" button [detail]="false" [routerLink]="['/tabs/menuPage/notificationsPage']">
+      <ion-icon name="notifications-outline" slot="start" style="height: 25px;"></ion-icon>
+      <ion-label>
+        {{'NOTIFICATIONS' | translate}}
+      </ion-label>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-back-outline" slot="end" style="height: 20px;"></ion-icon>
+    </ion-item>
+    <ion-item style="color: #484848;" button [detail]="false" [routerLink]="['/tabs/menuPage/settings']">
+      <ion-icon name="cog-outline" slot="start" style="height: 25px;"></ion-icon>
+      <ion-label>
+        {{'SETTINGS' | translate}}
+      </ion-label>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='ltr'" name="chevron-forward-outline" slot="end" style="height: 20px;"></ion-icon>
+      <ion-icon *ngIf="GlobalFields.getLanguageLayout()=='rtl'" name="chevron-back-outline" slot="end" style="height: 20px;"></ion-icon>    </ion-item>
+    <ion-item *ngIf="GlobalFields.isLoggedIn" style="color: #484848;" button (click)="logout()" [detail]="false">
+      <ion-icon name="log-out-outline" slot="start" style="height: 25px;"></ion-icon>
+      <ion-label>
+        {{'LOGOUT' | translate}}
+      </ion-label>
+    </ion-item>
+  </ion-list>
+
+
+
+  <div *ngIf="!GlobalFields.isLoggedIn" class="pageSection"
+       style="margin: 10px; padding: 15px; box-shadow: 0 5px 16px 0 rgba(0, 0, 0, 0.07) !important;">
+    <loginComponent></loginComponent>
+  </div>
+
+
+
+
+  <!-- Recently viewed-->
+  <div class="section" style="margin-top: 50px; padding: 15px"
+       *ngIf="GlobalFields.isLoggedIn && GlobalFields.recentViewedListings && GlobalFields.recentViewedListings.length > 0">
+    <h4 style="margin: 0"><i class="fas fa-history"></i> {{'RECENTLY_VIEWED' | translate}}</h4><br>
+    <div *ngFor="let listing of GlobalFields.recentViewedListings;  let i = index" style="margin:5px">
+      <page-listingList [listing]="listing" [type]="'2b'" [search]="true"></page-listingList>
+    </div>
+  </div>
+
+
+  <div id="check-point"></div>  <!-- Check point to the bottom -->
+</ion-content>
+

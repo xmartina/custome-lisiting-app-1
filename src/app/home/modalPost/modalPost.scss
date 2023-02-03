@@ -1,0 +1,75 @@
+
+#titleID {
+  width: calc(100% - 10px);
+  border: 0;
+  border-radius: 0;
+  background: transparent;
+}
+
+
+img {
+  width: 100% ;
+  border: 0 ;
+  height: auto ;
+}
+
+.section{
+  padding:16px;
+  margin-bottom: -26px;
+}
+.titleSection{
+  font-size: 16pt;
+  height: fit-content;
+}
+
+.toolbar-background {
+  background: transparent !important;
+  border: none !important;
+}
+
+ion-content .scroll-content {
+  margin-top: 0px !important;
+}
+
+.header-ios .toolbar-background-ios {
+  border: none !important;
+  box-shadow: none!important;
+}
+.header-md .toolbar-background-md {
+  border: none !important;
+  box-shadow: none!important;
+
+}
+.header-md::after{
+  background-image: none !important;
+}
+
+.btnFloatingRightDiv {
+  display: inline;
+  float: right;
+  padding: 0;
+}
+
+.btnFloatingLeftDiv {
+  display: inline;
+  float: left;
+  padding: 0;
+}
+
+.btnFloating {
+  font-size: 21px;
+  position: relative;
+  right: 0px;
+  background-color: transparent;
+  margin-bottom: 5px;
+  color: white;
+  padding: 0;
+}
+
+.backBtn {
+  font-size: 32px !important;
+  font-weight: 600;
+  margin-top: -6px;
+  -webkit-transition: none 0s ease 0s;
+  transition: none 0s ease 0s;
+}

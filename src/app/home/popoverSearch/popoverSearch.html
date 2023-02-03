@@ -1,0 +1,31 @@
+
+<div class="arrow-up"></div>
+<ion-card-content>
+  <ion-list *ngIf="GlobalFields.searchByStringListings && GlobalFields.searchByStringListings.length>0" style="border: none !important;">
+    <ion-item *ngFor="let listing of GlobalFields.searchByStringListings" style="border: none !important;">
+      <ion-row (click)="openModalListing(listing)" style="width: 100%; padding: 5px;">
+        <ion-col no-padding  size="3">
+          <div *ngIf="listing.img_cover" class="circularLittleImg" [style.background]="'url(' + listing.img_cover + ')'"></div>
+        </ion-col>
+        <ion-col no-padding  size="9">
+          <p class="listingType" *ngIf="GlobalFields.getListingTypeNameBySlug(listing.listing_data._case27_listing_type)">{{GlobalFields.getListingTypeNameBySlug(listing.listing_data._case27_listing_type)}}</p>
+          <!-- recensioni-->
+          <span class="reviewCounterLittle" *ngIf="!listing.listing_data._case27_review_count || listing.listing_data._case27_review_count == '0'">0 recensioni</span>
+          <div class="reviewsLabelHeaderLittle" *ngIf="listing.listing_data._case27_review_count && listing.listing_data._case27_review_count != '0'">
+            <label class="reviewsNoBox">
+              {{listing.listing_data._case27_average_rating}}
+              <ion-icon name="star" class="starReviewLittle"></ion-icon>
+            </label>
+            <br>
+            <label class="reviewCounterLittle"> {{listing.listing_data._case27_review_count}} recensione/i</label>
+          </div>
+          <p class="listingTitle" *ngIf="listing.title">{{listing.title.rendered}}</p>
+          <p style="font-size: smaller; color: #979797; margin: 0px;" *ngIf="listing.listing_data">{{listing.listing_data._job_location}}</p>
+        </ion-col>
+      </ion-row>
+    </ion-item>
+  </ion-list>
+  <div style="width: 100%; text-align: center; background-color: white;">
+    <div class="lds-ellipsis" *ngIf="!GlobalFields.searchByStringListings || GlobalFields.searchByStringListings.length==0"><div></div><div></div><div></div><div></div></div>
+  </div>
+</ion-card-content>

@@ -1,0 +1,54 @@
+<ion-content *ngIf="!softLoading" style="height: 100%; width: 100%; position: absolute; z-index: 99999; background-color: white">
+
+
+  <div style="height: 100%; width: 100%; background-color: white; overflow-y: hidden">
+
+
+    <div *ngIf="!GlobalFields.errorIni">
+      <ion-list style="padding: 15px">
+        <div *ngFor="let items of [1,2,3]">
+          <ion-thumbnail style="width: 100%; height: 200px;">
+            <ion-skeleton-text animated></ion-skeleton-text>
+          </ion-thumbnail>
+          <ion-label>
+            <h3>
+              <ion-skeleton-text animated style="width: 50%"></ion-skeleton-text>
+            </h3>
+            <p>
+              <ion-skeleton-text animated style="width: 80%"></ion-skeleton-text>
+            </p>
+            <p>
+              <ion-skeleton-text animated style="width: 60%"></ion-skeleton-text>
+            </p>
+          </ion-label>
+          <br>
+        </div>
+      </ion-list>
+    </div>
+
+
+    <div *ngIf="GlobalFields.errorIni"
+         style="position: fixed; text-align: center; margin: auto; bottom: 10%; width: 100%;"> Server not available, try
+      again <br>
+      <ion-button color="success" (click)="retryInit()"><i class="fas fa-redo-alt" style="margin-right: 5px"></i>
+        Refresh
+      </ion-button>
+      <br><br>
+      <span style="color: red; font-size: smaller">{{GlobalFields.errorString}}</span>
+    </div>
+
+  </div>
+
+  <!-- <div class="cssload-spin-box"></div>-->
+
+
+</ion-content>
+
+<ion-content *ngIf="softLoading" style="height: 100%; width: 100%; z-index: 99999;">
+
+  <div style="height: 100%; width: 100%; background-color: rgba(189,189,189,0.6)">
+
+  </div>
+  <div class="cssload-spin-box"></div>
+
+</ion-content>

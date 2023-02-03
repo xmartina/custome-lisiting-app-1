@@ -1,0 +1,73 @@
+<ion-header translucent="true" mode="{{GlobalFields.mode}}" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar>
+    <!-- If Side menu is used-->
+    <ion-buttons *ngIf="GlobalFields.site_details.navigationType==2" slot="start">
+      <ion-menu-button style="color: #3b3c3c"></ion-menu-button>
+    </ion-buttons>
+    <ion-title>{{'SHOP' | translate}}</ion-title>
+    <ion-buttons slot="end" style="position: absolute; right: 5px">
+      <button *ngIf="!showFilters" class="btn-search-header" (click)="showFilters=!showFilters" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-search"></i></button>
+      <button *ngIf="showFilters" class="btn-search-header" style="color: red; padding: 8px 10px" (click)="showFilters=!showFilters" dir="{{GlobalFields.getLanguageLayout()}}"><i class="fas fa-times"></i></button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <ion-header *ngIf="!showFilters" collapse="condense" dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-toolbar style="padding: 15px">
+      <ion-title size="large">{{'SHOP' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div class="filtersBox" *ngIf="showFilters"  dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-row  dir="{{GlobalFields.getLanguageLayout()}}">
+      <ion-col size="4"><b>{{'CATEGORIES' | translate}}:</b></ion-col>
+      <ion-col size="6">
+        <span *ngFor="let cat of categories">
+          <input type="checkbox" id="{{'cat' + cat.id}}" name="{{'cat' + cat.id}}" [(ngModel)]="cat.selected">
+          <label for="{{'cat' + cat.id}}" style="padding-left: 10px;">{{cat.name}}</label><br>
+        </span>
+      </ion-col>
+    </ion-row>
+    <div style="text-align: right"  dir="{{GlobalFields.getLanguageLayout()}}">
+      <button class="btn-search-header" style="position: relative" [ngStyle]="GlobalFields.getPrimaryColorJson()" (click)="loadFirstTimeProducts(); showFilters=false">
+        <ion-icon name="search"></ion-icon> {{'SHOW_RESULTS' | translate}}
+      </button>
+    </div>
+  </div>
+
+
+  <div *ngIf="!loading && products && products.length==0">
+    No products
+  </div>
+
+  <span *ngFor="let prod of products" >
+   <productList [product]="prod"></productList>
+  </span>
+
+  <!-- Paging -->
+  <div *ngIf="!loading && products && lastNumber>19" style="width: 100%; text-align: center; margin-top: 10px; margin-bottom: 20px;" (click)="loadMoreProducts()">
+    <ion-icon name="refresh"></ion-icon> {{'LOAD_MORE' | translate}}
+  </div>
+
+  <!-- Loading -->
+  <div *ngIf="loading">
+    <ion-list style="padding: 15px">
+      <div *ngFor="let items of [1,2,3]">
+        <ion-thumbnail style="width: 100%; height: 200px;">
+          <ion-skeleton-text animated></ion-skeleton-text>
+        </ion-thumbnail>
+        <ion-label>
+          <h3><ion-skeleton-text animated style="width: 50%"></ion-skeleton-text></h3>
+          <p><ion-skeleton-text animated style="width: 80%"></ion-skeleton-text></p>
+          <p><ion-skeleton-text animated style="width: 60%"></ion-skeleton-text></p>
+        </ion-label>
+        <br>
+      </div>
+    </ion-list>
+  </div>
+
+
+
+</ion-content>

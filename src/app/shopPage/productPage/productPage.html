@@ -1,0 +1,40 @@
+<ion-header translucent="true" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/shop" (click)="GlobalFields.selectedProduct = undefined"></ion-back-button>
+    </ion-buttons>
+    <ion-title *ngIf="GlobalFields.selectedProduct">{{GlobalFields.selectedProduct.name}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <div *ngIf="GlobalFields.selectedProduct" style="margin: 10px">
+    <ion-slides *ngIf="GlobalFields.selectedProduct.images && GlobalFields.selectedProduct.images.length>0">
+      <ion-slide *ngFor="let img of GlobalFields.selectedProduct.images" style="background-color: whitesmoke;">
+      <div style="text-align: center; background-color: whitesmoke;">
+        <img src="{{img.src}}" style="height: 150px; width: auto"/>
+      </div>
+      </ion-slide>
+    </ion-slides>
+    <ion-card-header>
+      <ion-card-subtitle [innerHTML]="GlobalFields.selectedProduct.price_html"></ion-card-subtitle>
+      <ion-card-title style="font-size: 12pt">
+        {{GlobalFields.selectedProduct.name}}
+      </ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <div [innerHTML]="GlobalFields.selectedProduct.short_description"></div>
+
+      <br><br>
+      <div style="text-align: center">
+        <button style="margin-bottom: 10px; padding: 10px; border-radius: 50px; box-shadow: 0 2px 8px rgba(0,0,0,.15)!important; background-color: white;" (click)="goToOrder()">
+          <i class="fas fa-shopping-cart"></i> {{'BUY_NOW' | translate}}
+        </button>
+      </div>
+
+
+    </ion-card-content>
+  </div>
+
+</ion-content>

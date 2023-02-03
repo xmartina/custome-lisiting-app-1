@@ -1,0 +1,20 @@
+<ion-header translucent="true" dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-toolbar dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="tabs/shop" (click)="GlobalFields.selectedProduct = undefined"></ion-back-button>
+    </ion-buttons>
+    <ion-title>Checkout</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content dir="{{GlobalFields.getLanguageLayout()}}">
+
+
+  <iframe [src]='secureUrl'
+          #iframe
+          webkitallowfullscreen mozallowfullscreen allowfullscreen
+          sandbox="allow-scripts allow-top-navigation allow-pointer-lock allow-forms allow-same-origin allow-popups"
+          style="width: 100%; height: 100%; border: none">
+  </iframe>
+
+</ion-content>

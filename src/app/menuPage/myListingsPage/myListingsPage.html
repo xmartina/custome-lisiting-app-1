@@ -1,0 +1,173 @@
+<ion-header translucent="true" mode="{{GlobalFields.mode}}" dir="{{GlobalFields.getLanguageLayout()}}">
+    <ion-toolbar >
+        <ion-buttons slot="start">
+            <ion-back-button defaultHref="tabs/menuPage" ></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{'MY_LISTINGS' | translate}}</ion-title>
+    </ion-toolbar>
+</ion-header>
+
+
+<ion-content  class="cards-bg social-cards" [ngStyle]="GlobalFields.getBodyColorBackgroundJson()" style="background-color: white" dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <ion-header collapse="condense">
+    <ion-toolbar style="padding: 15px">
+      <ion-title size="large">{{'MY_LISTINGS' | translate}}</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <div style="padding: 15px;">
+
+      <ion-segment [(ngModel)]="selectedTab" style="width: 50%; min-width: fit-content; margin: auto;">
+          <ion-segment-button value="1">
+              <ion-label>{{'STATS' | translate}}</ion-label>
+          </ion-segment-button>
+          <ion-segment-button value="2">
+              <ion-label>{{'LISTINGS' | translate}}</ion-label>
+          </ion-segment-button>
+      </ion-segment>
+    <br>
+
+      <!-- STATS SEGMENT -->
+      <div *ngIf="selectedTab == 1">
+          <!-- Stats listings-->
+          <div *ngIf="GlobalFields.isLoggedIn && currentUserInfo && currentUserInfo.user && currentUserInfo.user.meta && currentUserInfo.user.meta._mylisting_stats_cache"
+               class="pageSection">
+              <h3><i class="fas fa-signal" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i> {{'STATS' | translate}}
+              </h3><br>
+              <span *ngIf="currentUserInfo.user.meta._mylisting_stats_cache.listings"> <!-- stats listings -->
+              <div class="statsBox" style="background: #6c1cff;" dir="{{GlobalFields.getLanguageLayout()}}">
+                  <h2 dir="{{GlobalFields.getLanguageLayout()}}">{{currentUserInfo.user.meta._mylisting_stats_cache.listings.published}}</h2>
+                  <p dir="{{GlobalFields.getLanguageLayout()}}">{{'LISTINGS_PUB' | translate}}</p>
+                  <i class="far fa-window-maximize" dir="{{GlobalFields.getLanguageLayout()}}"></i>
+              </div>
+              <div class="statsBox" style="background: #911cff;" dir="{{GlobalFields.getLanguageLayout()}}">
+                  <h2 dir="{{GlobalFields.getLanguageLayout()}}">{{currentUserInfo.user.meta._mylisting_stats_cache.listings.pending_approval}}</h2>
+                  <p dir="{{GlobalFields.getLanguageLayout()}}">{{'LISTINGS_PEN' | translate}}</p>
+                  <i class="fas fa-pencil-ruler" dir="{{GlobalFields.getLanguageLayout()}}"></i>
+              </div>
+              <div class="statsBox" style="background: #0079e0;" dir="{{GlobalFields.getLanguageLayout()}}">
+                  <h2 dir="{{GlobalFields.getLanguageLayout()}}">{{currentUserInfo.user.meta._mylisting_stats_cache.listings.expired}}</h2>
+                  <p dir="{{GlobalFields.getLanguageLayout()}}">{{'LISTINGS_EXP' | translate}}</p>
+                  <i class="far fa-clock" dir="{{GlobalFields.getLanguageLayout()}}"></i>
+              </div>
+          </span>
+          </div>
+
+
+          <!-- Views -->
+          <div *ngIf="GlobalFields.isLoggedIn" class="pageSection">
+              <h3><i class="far fa-eye" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i> {{'VIEWS' | translate}}</h3>
+              <br>
+              <!-- stats listings -->
+              <div class="numberStats">
+                  <p>
+                      <span class="animated-bars"><i class="far fa-chart-bar"></i></span>
+                      <span *ngIf="!loadingSection && currentUserInfo && currentUserInfo.user && currentUserInfo.user.meta && currentUserInfo.user.meta._mylisting_stats_cache && currentUserInfo.user.meta._mylisting_stats_cache.visits && currentUserInfo.user.meta._mylisting_stats_cache.visits.views">
+                              <span *ngIf="currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastday">{{currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastday}}</span>
+                              <span *ngIf="!currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastday">-</span>
+                          </span>
+                      <span *ngIf="loadingSection"> <i class="fas fa-spinner fa-spin"></i></span>
+                      {{'LAST_24_HOURS' | translate}}
+                  </p>
+                  <p>
+                      <span class="animated-bars"><i class="far fa-chart-bar"></i></span>
+                      <span *ngIf="!loadingSection && currentUserInfo && currentUserInfo.user && currentUserInfo.user.meta && currentUserInfo.user.meta._mylisting_stats_cache && currentUserInfo.user.meta._mylisting_stats_cache.visits && currentUserInfo.user.meta._mylisting_stats_cache.visits.views">
+                              <span *ngIf="currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastweek">{{currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastweek}}</span>
+                              <span *ngIf="!currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastweek">-</span>
+                          </span>
+                      <span *ngIf="loadingSection"> <i class="fas fa-spinner fa-spin"></i></span>
+                      {{'LAST_7_DAYS' | translate}}
+                  </p>
+                  <p>
+                      <span class="animated-bars"><i class="far fa-chart-bar"></i></span>
+                      <span *ngIf="!loadingSection && currentUserInfo && currentUserInfo.user && currentUserInfo.user.meta && currentUserInfo.user.meta._mylisting_stats_cache && currentUserInfo.user.meta._mylisting_stats_cache.visits && currentUserInfo.user.meta._mylisting_stats_cache.visits.views">
+                              <span *ngIf="currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastmonth">{{currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastmonth}}</span>
+                              <span *ngIf="!currentUserInfo.user.meta._mylisting_stats_cache.visits.views.lastmonth">-</span>
+                          </span>
+                      <span *ngIf="loadingSection"> <i class="fas fa-spinner fa-spin"></i></span>
+                      {{'LAST_30_DAYS' | translate}}
+                  </p>
+              </div>
+          </div>
+
+          <!-- Unique views -->
+          <div *ngIf="GlobalFields.isLoggedIn" class="pageSection">
+              <h3><i class="fas fa-user-clock" [ngStyle]="GlobalFields.getPrimaryColorJson()"></i> {{'UNIQUE_VIEWS' |
+                  translate}}</h3><br>
+              <!-- stats listings -->
+              <div class="numberStats">
+                  <p>
+                      <span class="animated-bars"><i class="far fa-chart-bar"></i></span>
+                      <span *ngIf="!loadingSection && currentUserInfo && currentUserInfo.user && currentUserInfo.user.meta && currentUserInfo.user.meta._mylisting_stats_cache && currentUserInfo.user.meta._mylisting_stats_cache.visits && currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views">
+                              <span *ngIf="currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastday">{{currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastday}}</span>
+                              <span *ngIf="!currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastday">-</span>
+                          </span>
+                      <span *ngIf="loadingSection"> <i class="fas fa-spinner fa-spin"></i></span>
+                      {{'LAST_24_HOURS' | translate}}
+                  </p>
+                  <p>
+                      <span class="animated-bars"><i class="far fa-chart-bar"></i></span>
+                      <span *ngIf="!loadingSection && currentUserInfo && currentUserInfo.user && currentUserInfo.user.meta && currentUserInfo.user.meta._mylisting_stats_cache && currentUserInfo.user.meta._mylisting_stats_cache.visits && currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views">
+                              <span *ngIf="currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastweek">{{currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastweek}}</span>
+                              <span *ngIf="!currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastweek">-</span>
+                          </span>
+                      <span *ngIf="loadingSection"> <i class="fas fa-spinner fa-spin"></i></span>
+                      {{'LAST_7_DAYS' | translate}}
+                  </p>
+                  <p>
+                      <span class="animated-bars"><i class="far fa-chart-bar"></i></span>
+                      <span *ngIf="!loadingSection && currentUserInfo && currentUserInfo.user && currentUserInfo.user.meta && currentUserInfo.user.meta._mylisting_stats_cache && currentUserInfo.user.meta._mylisting_stats_cache.visits && currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views">
+                              <span *ngIf="currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastmonth">{{currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastmonth}}</span>
+                              <span *ngIf="!currentUserInfo.user.meta._mylisting_stats_cache.visits.unique_views.lastmonth">-</span>
+                          </span>
+                      <span *ngIf="loadingSection"> <i class="fas fa-spinner fa-spin"></i></span>
+                      {{'LAST_30_DAYS' | translate}}
+                  </p>
+              </div>
+          </div>
+      </div>
+
+
+      <!-- MYLISTINGS SEGMENT -->
+      <div *ngIf="selectedTab == 2">
+          <!-- My listings-->
+          <div *ngIf="GlobalFields.isLoggedIn" style="padding-left: 5px; padding-right: 5px;">
+              <span *ngIf="!loadingSection && myListings">
+                  <div *ngFor="let listing of myListings;  let i = index" style="position: relative">
+                      <div *ngIf="listing.post_status == Constants.LISTING_STATUS_PENDING"
+                           dir="{{GlobalFields.getLanguageLayout()}}" style="text-align: right">
+                          <span class="statusListing"> {{'APPROVAL_PENDING' | translate}}</span>
+                      </div>
+                      <ion-row dir="{{GlobalFields.getLanguageLayout()}}">
+                            <ion-col size="11" style="padding: 0 !important;">
+                                <page-listingList [listing]="listing" [type]="'2'" [search]="true"></page-listingList>
+                            </ion-col>
+                            <ion-col size="1" style="padding: 0 !important; text-align: center;">
+                              <button class="btnAction" (click)="editListing(listing)"><i class="fas fa-pencil-alt" style="color: #00BCD4;"></i></button>
+                              <button class="btnAction" (click)="deleteListing(listing)"><i class="fas fa-trash-alt" style="color: #ff0000;"></i></button>
+                            </ion-col>
+                      </ion-row>
+                  </div>
+              </span>
+              <div style="width: 100%; text-align: center;" *ngIf="!noMoreMyListings && !loadingMoreData"
+                   (click)="loadMoreMyListings()">
+                  <ion-icon name="refresh"></ion-icon>
+                  {{'LOAD_MORE' | translate}}
+              </div>
+
+              <div style="width: 100%; text-align: center;" *ngIf="loadingMoreData">
+                  <div class="lds-ellipsis">
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                      <div></div>
+                  </div>
+              </div>
+              <span *ngIf="!loadingMoreData && (!myListings || myListings.length==0)" style="padding-left: 25px;"> {{'NO_RESULTS' | translate}}</span>
+          </div>
+      </div>
+
+  </div>
+
+</ion-content>

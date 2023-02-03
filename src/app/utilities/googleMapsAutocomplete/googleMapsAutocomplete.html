@@ -1,0 +1,33 @@
+
+<!-- Google Maps -->
+<div style="position: relative" *ngIf="GlobalFields.site_details.mapType==1">
+<input #googleSearch class="form-control googleAutoCompleteInput" autocorrect="off" autocapitalize="off"
+       spellcheck="off" type="text" clearInput="true"
+       placeholder="{{placeholder}}">
+  <i class="fas fa-times cancelText" *ngIf="value && value!=''" (click)="cancelText()"></i>
+</div>
+
+<!-- OpenStreetMap -->
+<div style="position: relative" *ngIf="GlobalFields.site_details.mapType==2">
+  <input class="form-control googleAutoCompleteInput" autocorrect="off" autocapitalize="off"
+         spellcheck="off" type="text" clearInput="true"
+         placeholder="{{placeholder}}"
+         [(ngModel)]="openStreetValue" (input)="findAddressOpenStreetMaps(openStreetValue)">
+  <i class="fas fa-times cancelText" *ngIf="openStreetValue && openStreetValue!=''" (click)="cancelText()"></i>
+
+  <div class="openStreetResultsBox" *ngIf="resultsOpenStreetMap && resultsOpenStreetMap.features">
+    <ul>
+      <li *ngFor="let res of resultsOpenStreetMap.features" (click)="selectOpenStreetResult(res.properties)">
+        <i class="fas fa-map-marker-alt"></i>
+        <span *ngIf="res.properties.name">{{res.properties.name}}</span>
+        <span *ngIf="res.properties.state">,{{res.properties.state}}</span>
+        <span *ngIf="res.properties.country">,{{res.properties.country}}</span>
+      </li>
+      <li *ngIf="resultsOpenStreetMap.features.length==0">
+        {{'NO_RESULTS' | translate}}
+      </li>
+    </ul>
+  </div>
+
+
+</div>

@@ -1,0 +1,22 @@
+<ion-app [style.font-family]="themeService.getGlobalFontStyle()">
+ <ion-content *ngIf="GlobalFields.loading" class="cards-bg social-cards" style="z-index: 99999;"  dir="{{GlobalFields.getLanguageLayout()}}">
+    <loading [softLoading]="false"></loading>
+  </ion-content>
+  <ion-content *ngIf="GlobalFields.loadingSoft" class="cards-bg social-cards" style="z-index: 99999;">
+    <loading [softLoading]="true"></loading>
+  </ion-content>
+<!-- <ion-toolbar *ngIf="checkPlatform()"></ion-toolbar> -->
+
+
+  <ion-split-pane contentId="main-content">
+    <!-- The app side menu, if used-->
+    <app-sideMenu *ngIf="!GlobalFields.loading && GlobalFields.site_details && GlobalFields.site_details.navigationType == 2"></app-sideMenu>
+
+    <!-- the main content -->
+    <ion-router-outlet id="main"  *ngIf="!GlobalFields.loading" [swipeGesture]="true" main></ion-router-outlet>
+
+  </ion-split-pane>
+
+
+  <!--<ion-nav *ngIf="!GlobalFields.loading" #myNav [root]="rootPage"></ion-nav> -->
+</ion-app>

@@ -1,0 +1,47 @@
+SHA-1 and SHA-256 check: keytool -keystore {APP_NAME}.keystore -storepass "p4ssw0rd" -keypass "p4ssw0rd" -list -v
+
+Keystore for FB: keytool -exportcert -alias Study_aims -keystore {APP_NAME}.keystore | openssl sha1 -binary | openssl base64
+
+
+-- steps ----
+#env variables
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/jdk1.8.0_281.jdk/Contents/Home
+export PATH=$JAVA_HOME/bin:$PATH
+export PROJECT_PATH=/Users/gabriele/WebstormProjects/customlistingapp
+export ANDROID_HOME=/Users/gabriele/Library/Android/sdk
+export ANDROID_SDK_ROOT=$ANDROID_HOME
+export PATH=$PATH:$ANDROID_HOME/tools:$ANDROID_HOME/platform-tools
+export GRADLE_HOME=/Users/gabriele/Library/gradle-6.8.1
+export APP_NAME=cla
+
+#keystore generation, password: p4ssw0rd
+keytool -genkey -v -keystore ${APP_NAME}.keystore -alias ${APP_NAME}_app_key -keyalg RSA -keysize 2048 -validity 10000
+keytool -keystore ${APP_NAME}.keystore -storepass "p4ssw0rd" -keypass "p4ssw0rd" -list -v
+keytool -exportcert -alias ${APP_NAME}_app_key -keystore ${APP_NAME}.keystore | openssl sha1 -binary | openssl base64
+
+#generation of images
+ionic cordova resources
+
+#generation of app for production
+ionic cordova platform remove android --save
+ionic cordova plugin remove cordova-plugin-facebook4
+npm uninstall @ionic-native/facebook
+rm -rf node_modules/
+rm -rf plugins/
+rm -f package-lock.json
+ionic cordova platform add android@latest --save
+npm install @ionic-native/facebook
+ionic cordova plugin add cordova-plugin-facebook4 --variable APP_ID="" --variable APP_NAME=""
+npm install
+ionic cordova build android --prod --release
+ionic cordova run android --prod --device
+
+#signing
+rm -f $PROJECT_PATH/build-android/*.apk
+cd $PROJECT_PATH/platforms/android/app/build/outputs/apk/release/
+mv app-release-unsigned.apk ${APP_NAME}_app_unsigned.apk
+mv ${APP_NAME}_app_unsigned.apk $PROJECT_PATH/build-android
+cd $PROJECT_PATH/build-android
+jarsigner -verbose -sigalg SHA1withRSA -digestalg SHA1 -storepass "p4ssw0rd" -keypass "p4ssw0rd" -keystore ${APP_NAME}.keystore ${APP_NAME}_app_unsigned.apk ${APP_NAME}_app_key
+$ANDROID_HOME/build-tools/30.0.3/zipalign -v -p 4 ${APP_NAME}_app_unsigned.apk ${APP_NAME}_app.apk
+

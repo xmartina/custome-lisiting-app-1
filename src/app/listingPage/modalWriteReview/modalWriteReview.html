@@ -1,0 +1,72 @@
+<ion-header dir="{{GlobalFields.getLanguageLayout()}}" style="background-color: white; border: none; box-shadow: 0 3px 10px rgba(0, 0, 0, 0.12);">
+  <ion-toolbar  class="toolbarHeader">
+    <div class="headerContainer">
+      <div class="headerCol1">
+        <ion-icon name="close" style="font-size: 20px; margin: 3px;" (click)="closeModal()"></ion-icon>
+      </div>
+      <div class="headerCol2">
+        <h3 style="margin: 0">{{'WRITE_REVIEW' | translate}}</h3>
+      </div>
+    </div>
+  </ion-toolbar>
+</ion-header>
+
+
+<ion-content padding dir="{{GlobalFields.getLanguageLayout()}}">
+
+  <div style="padding: 15px; margin-top: 15px">
+
+    <!-- Stars chooser-->
+    <div *ngFor="let field of customFieldsStars"  style="margin-bottom: 15px;">
+      <ion-label position="floating">{{field.label}}</ion-label><br>
+      <span *ngFor="let star of getStartsHtml(field.value); let i = index">
+      <i [class]="star" style='float: initial; font-size: 20px' (click)="field.value = i+1"></i>
+    </span>
+    </div>
+
+    <div  style="margin-bottom: 15px;">
+      <ion-label position="floating">{{'YOUR_MESSAGE' | translate}}</ion-label>
+      <ion-textarea placeholder="{{'YOUR_MESSAGE' | translate}}" [(ngModel)]="comment" rows="6" autoGrow="true" spellcheck="true"  style="border-bottom: solid 1px #d2d2d2; background-color: #f7f7f7; border-radius: 5px; padding: 5px; min-height: 100px;"></ion-textarea>
+    </div>
+
+    <span *ngIf="errorMgs" style="color: #c61a42;">{{errorMgs}}</span>
+    <br *ngIf="errorMgs">
+    <br *ngIf="errorMgs">
+
+
+    <ion-label position="floating">{{'PHOTO' | translate}}</ion-label>
+    <div *ngIf="gallery">
+      <span *ngFor="let img of gallery; let i = index">
+        <img class="reviewImg"  src="{{img.url}}">
+        <i class="far fa-trash-alt" style="color: #e43854" (click)="deleteOldImg(i)"></i>
+      </span>
+    </div>
+    <div style="display: inline">
+      <div class="imgContainerInline" *ngFor="let img of new_gallery; let i = index">
+        <img [src]="img" class="newReviewImg">
+        <i class="far fa-trash-alt" style="color: #e43854" (click)="deleteNewImg(i)"></i>
+      </div>
+    </div>
+
+    <br>
+    <ion-button (click)="openImagePicker()"><i class="fas fa-plus"></i></ion-button>
+    <br>
+
+    <br><br>
+
+    <button class="btnSendReview"  [ngStyle]="GlobalFields.getPrimaryColorBackgroundJson()" (click)="postAReview()">
+      <span style="color: white"><i class="far fa-comment-alt" style="margin-right: 15px; text-transform: unset;"></i> {{'WRITE_REVIEW' | translate}}</span>
+    </button>
+
+    <br><br>
+  </div>
+</ion-content>
+
+<!--
+<ion-footer  style="display: inline-flex;  padding: 5px; padding-top: 10px; border-top: solid #dbdbdb 1px; padding-bottom: 25px; box-shadow: rgba(0, 0, 0, 0.06) 0px 2px 4px 0px !important;"   dir="{{GlobalFields.getLanguageLayout()}}">
+  <ion-button color="success" style="width: 100%; border-radius:5px; font-size: 18px; margin-left: 5px; font-weight: 600;" (click)="postAReview();">
+    <i class="far fa-comment-alt" style="margin-right: 15px; text-transform: unset;"></i>   {{'WRITE_REVIEW' | translate}}
+  </ion-button>
+</ion-footer>
+
+-->

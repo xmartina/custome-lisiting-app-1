@@ -1,0 +1,77 @@
+<!-- Custom fields -->
+<span *ngIf="filteredCustomFields && filteredCustomFields.length>0">
+    <section [class.gridBox]="type=='2' && !isWhiteBackground()"
+             [class.gridBoxWhiteBackground]="type=='2' && isWhiteBackground()" [class.floatGridBox]="type=='1'">
+        <span *ngFor="let field of filteredCustomFields" (click)="searchByType(type.ID)">
+            <span *ngIf="listing.listing_data[field.show_field]">
+                <div *ngIf="field.show_field" [class.divGridBox]="type=='2'" [class.badgeLeftFloat]="type=='1'">
+                  <!--Location-->
+                    <span *ngIf="field.show_field.includes('location'); else elsePhone">
+                        <i class="fas fa-map-marker-alt"></i> {{listing.listing_data[field.show_field]}}
+                    </span>
+                  <!--Phone number-->
+                  <ng-template #elsePhone>
+                    <span *ngIf="field.show_field.includes('phone'); else elseEmail">
+                        <i class="fas fa-phone"></i> {{listing.listing_data[field.show_field]}}
+                    </span>
+                  </ng-template>
+                  <!-- Email -->
+                  <ng-template #elseEmail>
+                    <span *ngIf="field.show_field.includes('email'); else elseDate">
+                        <i class="fas fa-envelope"></i> {{listing.listing_data[field.show_field]}}
+                    </span>
+                  </ng-template>
+                  <!-- Date -->
+                  <ng-template #elseDate>
+                    <span *ngIf="field.show_field.includes('date'); else elsePriceRange">
+                        <i class="fas fa-clock"></i> {{listing.listing_data[field.show_field]}}
+                    </span>
+                  </ng-template>
+                  <!-- Price range-->
+                  <ng-template #elsePriceRange>
+                    <span *ngIf="field.show_field == 'price_range'; else elsePrice">
+                        {{listing.listing_data[field.show_field]}}
+                    </span>
+                  </ng-template>
+                  <!-- Price -->
+                  <ng-template #elsePrice>
+                    <span *ngIf="field.show_field.includes('price') && field.show_field!='price_range'; else elseReview">
+                        {{listing.listing_data[field.show_field]}}
+                    </span>
+                  </ng-template>
+                  <!-- Review -->
+                  <ng-template #elseReview>
+                    <span *ngIf="field.show_field.includes('rating'); else elseOther">
+                         <i class="fas fa-star"></i> {{listing.listing_data[field.show_field]}}
+                    </span>
+                  </ng-template>
+
+                  <!-- Other -->
+                  <ng-template #elseOther>
+                    <span *ngIf=" listing.listing_data[field.show_field]">
+                        <span>{{listing.listing_data[field.show_field]}}</span>
+                    </span>
+                  </ng-template>
+
+                </div>
+            </span>
+        </span>
+    </section>
+</span>
+
+<!-- Taxonomies -->
+<span *ngIf="customTaxonomies && customTaxonomies.length>0 && type=='3'">
+    <section class="gridBox taxonomiesContainer"
+             [class]="!isWhiteBackground() ? 'gridBox taxonomiesContainer' : 'gridBox whiteBackTaxonomiesContainer' "
+             *ngIf="customTaxonomies[0].first_category">
+        <span *ngFor="let field of customTaxonomies" (click)="searchByType(type.ID)">
+            <!-- Categories -->
+            <div class="divGridBox" *ngIf="field.first_category">
+                <span><i style="font-size: 10pt; padding: 3px; border-radius: 100px; color: white"
+                         [ngStyle]="GlobalFields.getPrimaryColorBackgroundJson()"
+                         class="{{field.icon_font}}"></i> {{field.first_category}} <span
+                  *ngIf="field.others && field.others.length>0"> +{{field.others.length}}</span></span>
+            </div>
+        </span>
+    </section>
+</span>
